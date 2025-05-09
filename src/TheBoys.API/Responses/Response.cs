@@ -15,4 +15,18 @@ public record Response
 
     [JsonPropertyOrder(3)]
     public string Message { get; set; }
+
+    public void SendSuccess(string? message = "operation done successfully.")
+    {
+        Message = message;
+        Success = true;
+        StatusCode = (int)HttpStatusCode.OK;
+    }
+
+    public void SendBadRequest(string? message = "error")
+    {
+        Success = false;
+        StatusCode = (int)HttpStatusCode.BadRequest;
+        Message = message;
+    }
 }

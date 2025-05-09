@@ -1,5 +1,3 @@
 ﻿namespace TheBoys.API.Services.News;
 
-public interface IDaoService
-{
-}
+public interface INewsDaoService { }

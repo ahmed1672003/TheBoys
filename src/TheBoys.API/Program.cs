@@ -2,8 +2,14 @@ using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using TheBoys.API.Data;
+using TheBoys.API.ExternalServices.Email;
+using TheBoys.API.Services.News;
+using TheBoys.API.Settings;
 
 namespace TheBoys.API;
 
@@ -60,6 +66,17 @@ public class Program
                 cfg => cfg.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
             )
         );
+        builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
+            cfg.UseSqlServer(builder.Configuration.GetConnectionString("LocalDatabaseConnection"))
+        );
+        builder.Services.Configure<EmailSettings>(
+            builder.Configuration.GetSection("EmailSettings")
+        );
+        builder.Services.AddSingleton(sp =>
+            builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>()
+        );
+        builder.Services.AddScoped<INewsDaoService, NewsDaoService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
         var app = builder.Build();
         app.UseCors("the.boys.policy");
         app.UseSwagger();
