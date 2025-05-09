@@ -13,6 +13,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -61,8 +62,15 @@ public class Program
                 cfg => cfg.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
             )
         );
+
         builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
-            cfg.UseSqlServer(builder.Configuration.GetConnectionString("LocalDatabaseConnection"))
+            cfg.UseSqlServer(
+                builder.Configuration.GetConnectionString(
+                    builder.Environment.IsDevelopment()
+                        ? "LocalDatabaseConnection"
+                        : "ProductionDatabaseConnection"
+                )
+            )
         );
         builder.Services.Configure<EmailSettings>(
             builder.Configuration.GetSection("EmailSettings")
