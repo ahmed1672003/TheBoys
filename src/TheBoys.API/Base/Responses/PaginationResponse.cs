@@ -1,7 +1,6 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace TheBoys.API.Responses;
+namespace TheBoys.API.Bases.Responses;
 
 public sealed record PaginationResponse<TResponse> : ResponseOf<TResponse>
 {

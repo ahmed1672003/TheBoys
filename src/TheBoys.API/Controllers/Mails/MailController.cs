@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using TheBoys.API.Bases.Responses;
 using TheBoys.API.Contracts;
 using TheBoys.API.Controllers.Mails.Requests;
 using TheBoys.API.Enums;
 using TheBoys.API.ExternalServices.Email;
-using TheBoys.API.Responses;
 using TheBoys.API.Settings;
 
 namespace TheBoys.API.Controllers.Mails;

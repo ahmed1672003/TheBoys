@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json.Serialization;
 
-namespace TheBoys.API.Responses;
+namespace TheBoys.API.Bases.Responses;
 
 public record Response
 {
@@ -16,14 +16,14 @@ public record Response
     [JsonPropertyOrder(3)]
     public string Message { get; set; }
 
-    public void SendSuccess(string? message = "operation done successfully.")
+    public void SendSuccess(string message = "operation done successfully.")
     {
         Message = message;
         Success = true;
         StatusCode = (int)HttpStatusCode.OK;
     }
 
-    public void SendBadRequest(string? message = "error")
+    public void SendBadRequest(string message = "error")
     {
         Success = false;
         StatusCode = (int)HttpStatusCode.BadRequest;
