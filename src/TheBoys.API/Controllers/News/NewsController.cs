@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheBoys.API.Base.Requests;
 using TheBoys.API.Bases.Responses;
@@ -88,6 +89,70 @@ public class NewsController : ControllerBase
         response.Count = response.Result.Count;
         response.PageIndex = request.PageIndex;
         response.PageSize = request.PageSize;
+
+        return Ok(response);
+    }
+
+    /// <summary>
+    /// get news by id
+    /// </summary>
+    /// <remarks>
+    /// route params
+    ///
+    ///     id => news id | lid => language id
+    /// </remarks>
+    /// <param name="id"></param>
+    /// <param name="lid"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("{id}/{lid}")]
+    public async Task<ActionResult<ResponseOf<NewsDto>>> GetAsync(
+        [Required] [FromRoute] int id,
+        [Required] [FromRoute] int lid,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = new ResponseOf<NewsDto>();
+        if (
+            !await _context.NewsTranslations.AnyAsync(x =>
+                x.NewsId != null && x.NewsId == id && x.LangId == lid
+            )
+        )
+        {
+            response.SendBadRequest("No information for news with your language");
+            return Ok(response);
+        }
+        response.Result = await _context
+            .News.AsNoTracking()
+            .Include(x => x.NewsTranslations)
+            .Include(x => x.NewsImages)
+            .Where(x => x.NewsId == id)
+            .Select(news => new NewsDto()
+            {
+                Id = news.NewsId,
+                Date = news.NewsDate,
+                IsFeature = news.IsFeature,
+                NewsImg = news.NewsImg,
+                NewsDetails =
+                    news.NewsTranslations != null && news.NewsTranslations.Any()
+                        ? news
+                            .NewsTranslations.Select(t => new NewsTranslationDto()
+                            {
+                                Id = t.Id,
+                                Abbr = t.NewsAbbr,
+                                Body = t.NewsBody,
+                                Head = t.NewsHead,
+                                ImgAlt = t.ImgAlt,
+                                LanguageId = t.LangId,
+                                Source = t.NewsSource
+                            })
+                            .FirstOrDefault(x => x.LanguageId == lid)
+                        : null,
+                Images = news
+                    .NewsImages.Select(img => new NewsImageDto() { Id = img.Id, Url = img.NewsUrl })
+                    .ToList(),
+            })
+            .FirstOrDefaultAsync(cancellationToken);
 
         return Ok(response);
     }
