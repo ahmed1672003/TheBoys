@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using TheBoys.API.Bases.Responses;
@@ -41,6 +42,12 @@ public class MailController : ControllerBase
     )
     {
         var response = new Response();
+
+        if (!new EmailAddressAttribute().IsValid(request.Email))
+        {
+            response.SendBadRequest();
+            return Ok(response);
+        }
 
         var body = new StringBuilder(request.Body);
 
