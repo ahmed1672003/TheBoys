@@ -57,12 +57,22 @@ public class Program
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
-        builder.Services.AddCors(cfg =>
-            cfg.AddPolicy(
+
+        builder.Services.AddCors(cors =>
+        {
+            cors.AddPolicy(
                 "the.boys.policy",
-                cfg => cfg.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
-            )
-        );
+                options =>
+                    options
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowed(origin =>
+                            origin.StartsWith("http://localhost:5173")
+                            || origin == "http://193.227.24.31:5000"
+                        )
+                        .SetPreflightMaxAge(TimeSpan.FromMinutes(30))
+            );
+        });
 
         builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
             cfg.UseSqlServer(
