@@ -89,6 +89,7 @@ public class NewsController : ControllerBase
                     .ToList()
             })
             .ToListAsync(cancellationToken);
+        response.Result.RemoveAll(x => x.NewsDetails == null);
         response.Count = response.Result.Count;
         response.PageIndex = request.PageIndex;
         response.PageSize = request.PageSize;
@@ -110,8 +111,8 @@ public class NewsController : ControllerBase
     /// <returns></returns>
     [HttpGet("{id}/{lid}")]
     public async Task<ActionResult<ResponseOf<NewsDto>>> GetAsync(
-        [Required][FromRoute] int id,
-        [Required][FromRoute] int lid,
+        [Required] [FromRoute] int id,
+        [Required] [FromRoute] int lid,
         CancellationToken cancellationToken = default
     )
     {
