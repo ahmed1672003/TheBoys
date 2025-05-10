@@ -44,10 +44,9 @@ public class NewsController : ControllerBase
                 NewsDate = n.NewsDate,
                 IsFeature = n.IsFeature,
                 NewsImg = n.NewsImg,
-                Translation = n.NewsTranslations != null
-                && n.NewsTranslations.Any(x => x.LangId == request.LanguageId)
-                    ? n.NewsTranslations.FirstOrDefault(x => x.LangId == request.LanguageId)
-                    : n.NewsTranslations.OrderBy(x => x.Id).FirstOrDefault(),
+                Translation = n.NewsTranslations.FirstOrDefault(x =>
+                    x.LangId == request.LanguageId
+                ),
                 Images = n.NewsImages
             });
 
