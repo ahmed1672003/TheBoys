@@ -83,7 +83,6 @@ public class Program
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .SetIsOriginAllowed(origin => origin == "http://193.227.24.31:5000")
-                        .SetPreflightMaxAge(TimeSpan.FromMinutes(30))
             );
         });
 
