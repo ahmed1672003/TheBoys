@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TheBoys.API.Data;
 using TheBoys.API.ExternalServices.Email;
+using TheBoys.API.Seeding;
 using TheBoys.API.Services.News;
 using TheBoys.API.Settings;
 
@@ -80,7 +81,18 @@ public class Program
         );
         builder.Services.AddScoped<INewsDaoService, NewsDaoService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
+        builder.Services.AddScoped<ISeedingService, SeedingService>();
         var app = builder.Build();
+        #region seeding
+        if (app.Environment.IsDevelopment())
+        {
+            using (var scope = app.Services.CreateScope())
+            {
+                var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
+                seedingService.SeedLanguages();
+            }
+        }
+        #endregion
         app.UseCors("the.boys.policy");
         app.UseSwagger();
         app.UseSwaggerUI(c =>

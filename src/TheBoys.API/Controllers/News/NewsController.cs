@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TheBoys.API.Base.Requests;
 using TheBoys.API.Bases.Responses;
+using TheBoys.API.Controllers.News.Requests;
 using TheBoys.API.Data;
 using TheBoys.API.Dtos;
 using TheBoys.API.Extensions;
@@ -25,7 +25,7 @@ public class NewsController : ControllerBase
     /// <returns></returns>
     [HttpGet()]
     public async Task<ActionResult<PaginationResponse<List<NewsDto>>>> PaginateAllNewsAsync(
-        [FromQuery] PaginateRequest request,
+        [FromQuery] PaginateNewsRequest request,
         CancellationToken cancellationToken = default
     )
     {
@@ -111,8 +111,8 @@ public class NewsController : ControllerBase
     /// <returns></returns>
     [HttpGet("{id}/{lid}")]
     public async Task<ActionResult<ResponseOf<NewsDto>>> GetAsync(
-        [Required] [FromRoute] int id,
-        [Required] [FromRoute] int lid,
+        [Required][FromRoute] int id,
+        [Required][FromRoute] int lid,
         CancellationToken cancellationToken = default
     )
     {

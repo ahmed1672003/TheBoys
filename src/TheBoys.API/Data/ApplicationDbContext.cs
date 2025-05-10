@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<NewsImage> NewsImages { get; set; }
     public DbSet<News> News { get; set; }
     public DbSet<NewsTranslation> NewsTranslations { get; set; }
+    public DbSet<Language> Languages { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options) { }
