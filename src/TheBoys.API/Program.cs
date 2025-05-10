@@ -84,7 +84,7 @@ public class Program
         builder.Services.AddScoped<ISeedingService, SeedingService>();
         var app = builder.Build();
         #region seeding
-        if (app.Environment.IsProduction())
+        if (app.Environment.IsDevelopment())
         {
             using (var scope = app.Services.CreateScope())
             {
