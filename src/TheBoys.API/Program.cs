@@ -85,10 +85,10 @@ public class Program
             )
         );
         builder.Services.Configure<EmailSettings>(
-            builder.Configuration.GetSection("EmailSettings")
+            builder.Configuration.GetSection(nameof(EmailSettings))
         );
         builder.Services.AddSingleton(sp =>
-            builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>()
+            builder.Configuration.GetSection(nameof(EmailSettings)).Get<EmailSettings>()
         );
         builder.Services.AddScoped<INewsDaoService, NewsDaoService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
