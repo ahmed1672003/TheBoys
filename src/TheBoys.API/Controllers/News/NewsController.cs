@@ -65,6 +65,7 @@ public class NewsController : ControllerBase
         response.Result = await query
             .OrderByDescending(x => x.NewsDate)
             .Paginate(request.PageIndex, request.PageSize)
+            .Where(x => x.Translation != null)
             .Select(x => new NewsDto
             {
                 Id = x.NewsId,
@@ -89,7 +90,6 @@ public class NewsController : ControllerBase
                     .ToList()
             })
             .ToListAsync(cancellationToken);
-        response.Result.RemoveAll(x => x.NewsDetails == null);
         response.Count = response.Result.Count;
         response.PageIndex = request.PageIndex;
         response.PageSize = request.PageSize;
