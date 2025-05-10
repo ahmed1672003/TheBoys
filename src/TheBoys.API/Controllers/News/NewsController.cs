@@ -23,8 +23,9 @@ public class NewsController : ControllerBase
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet()]
+    [HttpGet("{lid}")]
     public async Task<ActionResult<PaginationResponse<List<NewsDto>>>> PaginateAllNewsAsync(
+        [Required] [FromRoute] int lid,
         [FromQuery] PaginateRequest request,
         CancellationToken cancellationToken = default
     )
@@ -43,7 +44,10 @@ public class NewsController : ControllerBase
                 NewsDate = n.NewsDate,
                 IsFeature = n.IsFeature,
                 NewsImg = n.NewsImg,
-                Translation = n.NewsTranslations.OrderBy(t => t.Id).FirstOrDefault(),
+                Translation = n.NewsTranslations != null
+                && n.NewsTranslations.Any(x => x.LangId == lid)
+                    ? n.NewsTranslations.FirstOrDefault(x => x.LangId == lid)
+                    : n.NewsTranslations.OrderBy(x => x.Id).FirstOrDefault(),
                 Images = n.NewsImages
             });
 
