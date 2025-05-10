@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Threading.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TheBoys.API.Data;
@@ -92,6 +93,24 @@ public class Program
         builder.Services.AddScoped<INewsDaoService, NewsDaoService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ISeedingService, SeedingService>();
+        builder.Services.AddRateLimiter(options =>
+        {
+            options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
+                httpContext =>
+                {
+                    return RateLimitPartition.GetFixedWindowLimiter(
+                        $"IP_{httpContext.Connection.RemoteIpAddress}",
+                        (ip) =>
+                            new FixedWindowRateLimiterOptions
+                            {
+                                Window = TimeSpan.FromMinutes(1),
+                                PermitLimit = 50
+                            }
+                    );
+                }
+            );
+            options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+        });
         var app = builder.Build();
         #region seeding
         if (app.Environment.IsDevelopment())
