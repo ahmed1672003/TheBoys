@@ -11,7 +11,7 @@ namespace TheBoys.API;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -88,6 +88,8 @@ public class Program
         {
             using (var scope = app.Services.CreateScope())
             {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                context.Database.Migrate();
                 var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
                 seedingService.SeedLanguages();
             }
