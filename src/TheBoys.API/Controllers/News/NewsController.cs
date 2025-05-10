@@ -111,8 +111,8 @@ public class NewsController : ControllerBase
     /// <returns></returns>
     [HttpGet("{id}/{lid}")]
     public async Task<ActionResult<ResponseOf<NewsDto>>> GetAsync(
-        [Required] [FromRoute] int id,
-        [Required] [FromRoute] int lid,
+        [Required][FromRoute] int id,
+        [Required][FromRoute] int lid,
         CancellationToken cancellationToken = default
     )
     {
