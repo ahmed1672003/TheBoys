@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\News\Requests\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

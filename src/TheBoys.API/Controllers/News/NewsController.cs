@@ -29,14 +29,15 @@ public class NewsController : ControllerBase
         CancellationToken cancellationToken = default
     )
     {
-        if (request.PageSize >= 15)
+        if (request.PageSize >= 10)
         {
-            request.PageSize = 15;
+            request.PageSize = 10;
         }
 
         var response = new PaginationResponse<List<NewsDto>>();
         var query = _context
             .News.AsNoTracking()
+            .AsSplitQuery()
             .Select(n => new
             {
                 NewsId = n.NewsId,
