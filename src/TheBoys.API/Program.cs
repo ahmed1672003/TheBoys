@@ -15,7 +15,6 @@ public class Program
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -59,6 +58,22 @@ public class Program
             s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
 
+        //builder.Services.AddCors(cors =>
+        //{
+        //    cors.AddPolicy(
+        //        "the.boys.policy",
+        //        options =>
+        //            options
+        //                .AllowAnyHeader()
+        //                .AllowAnyMethod()
+        //                .SetIsOriginAllowed(origin =>
+        //                    origin.StartsWith("http://localhost:5173")
+        //                    || origin == "http://193.227.24.31:5000"
+        //                )
+        //                .SetPreflightMaxAge(TimeSpan.FromMinutes(30))
+        //    );
+        //});
+
         builder.Services.AddCors(cors =>
         {
             cors.AddPolicy(
@@ -67,10 +82,7 @@ public class Program
                     options
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .SetIsOriginAllowed(origin =>
-                            origin.StartsWith("http://localhost:5173")
-                            || origin == "http://193.227.24.31:5000"
-                        )
+                        .SetIsOriginAllowed(origin => origin == "http://193.227.24.31:5000")
                         .SetPreflightMaxAge(TimeSpan.FromMinutes(30))
             );
         });
