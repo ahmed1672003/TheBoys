@@ -68,7 +68,8 @@ public class NewsController : ControllerBase
                 Id = x.NewsId,
                 Date = x.NewsDate,
                 IsFeatured = x.IsFeatured,
-                NewsImg = x.NewsImg,
+                NewsImg =
+                    "https://mu.menofia.edu.eg/PrtlFiles/uni/Portal/Images/272eb211-d9d6-4109-926a-dd801722feed.png",
                 NewsDetails =
                     x.Translation == null
                         ? null!
@@ -76,20 +77,14 @@ public class NewsController : ControllerBase
                         {
                             Id = x.Translation.Id,
                             LanguageId = x.Translation.LangId,
-                            Head = x.Translation.NewsHead,
-                            Abbr = x.Translation.NewsAbbr,
-                            Body = x.Translation.NewsBody,
-                            Source = x.Translation.NewsSource,
+                            Head = StringExtensions.StripHtml(x.Translation.NewsHead),
+                            Abbr = StringExtensions.StripHtml(x.Translation.NewsAbbr),
+                            Body = StringExtensions.StripHtml(x.Translation.NewsBody),
+                            Source = StringExtensions.StripHtml(x.Translation.NewsSource),
                             ImgAlt = x.Translation.ImgAlt
                         },
             })
             .ToListAsync(cancellationToken);
-
-        if (response.Result is not null && !response.Result.Any())
-        {
-            foreach (var item in response.Result)
-            { }
-        }
 
         response.Count = response.Result.Count;
         response.PageIndex = request.PageIndex;
@@ -118,11 +113,7 @@ public class NewsController : ControllerBase
     )
     {
         var response = new ResponseOf<NewsDto>();
-        if (
-            !await _context.NewsTranslations.AnyAsync(x =>
-                x.NewsId != null && x.NewsId == id && x.LangId == lid
-            )
-        )
+        if (!await _context.NewsTranslations.AnyAsync(x => x.NewsId == id && x.LangId == lid))
         {
             response.SendBadRequest("No information for news with your language");
             return Ok(response);
@@ -136,19 +127,20 @@ public class NewsController : ControllerBase
                 Id = news.NewsId,
                 Date = news.NewsDate,
                 IsFeatured = news.IsFeatured,
-                NewsImg = news.NewsImg,
+                NewsImg =
+                    "https://mu.menofia.edu.eg/PrtlFiles/uni/Portal/Images/272eb211-d9d6-4109-926a-dd801722feed.png",
                 NewsDetails =
                     news.NewsTranslations != null && news.NewsTranslations.Any()
                         ? news
                             .NewsTranslations.Select(t => new NewsTranslationDto()
                             {
                                 Id = t.Id,
-                                Abbr = t.NewsAbbr,
-                                Body = t.NewsBody,
-                                Head = t.NewsHead,
+                                Head = StringExtensions.StripHtml(t.NewsHead),
+                                Abbr = StringExtensions.StripHtml(t.NewsAbbr),
+                                Body = StringExtensions.StripHtml(t.NewsBody),
+                                Source = StringExtensions.StripHtml(t.NewsSource),
                                 ImgAlt = t.ImgAlt,
                                 LanguageId = t.LangId,
-                                Source = t.NewsSource
                             })
                             .FirstOrDefault(x => x.LanguageId == lid)
                         : null,
