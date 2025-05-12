@@ -2,6 +2,7 @@
 
 namespace TheBoys.API.Entities;
 
+[Table("prtl_news", Schema = "dbo")]
 public class News
 {
     [Column("News_Id")]
@@ -16,10 +17,15 @@ public class News
     [Column("Owner_ID")]
     public Guid OwnerId { get; set; }
 
-    [Column("IsFeature")]
-    public bool IsFeature { get; set; }
+    [Column("currentNews_date")]
+    public DateTime CurrentNewData { get; set; }
 
-    public ICollection<NewsImage> NewsImages { get; set; } = new List<NewsImage>();
+    [Column("Published")]
+    public bool Published { get; set; }
+
+    [Column("IsFeatured")]
+    public bool IsFeatured { get; set; }
+
     public ICollection<NewsTranslation> NewsTranslations { get; set; } =
         new List<NewsTranslation>();
 }

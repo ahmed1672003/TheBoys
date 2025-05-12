@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TheBoys.API.Base.Requests;
-using TheBoys.API.Bases.Responses;
 using TheBoys.API.Data;
-using TheBoys.API.Dtos;
-using TheBoys.API.Extensions;
 
 namespace TheBoys.API.Controllers.Languages;
 
@@ -22,32 +17,32 @@ public class LanguageController : ControllerBase
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet()]
-    public async Task<ActionResult<List<LanguageDto>>> GetAllAsync(
-        [FromQuery] PaginateRequest request,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = new PaginationResponse<List<LanguageDto>>();
+    //[HttpGet()]
+    //public async Task<ActionResult<List<LanguageDto>>> GetAllAsync(
+    //    [FromQuery] PaginateRequest request,
+    //    CancellationToken cancellationToken = default
+    //)
+    //{
+    //    var response = new PaginationResponse<List<LanguageDto>>();
 
-        var query = _context.Languages.AsNoTracking().OrderBy(x => x.Name.ToLower()).AsQueryable();
+    //    var query = _context.Languages.AsNoTracking().OrderBy(x => x.Name.ToLower()).AsQueryable();
 
-        response.TotalCount = await query.CountAsync(cancellationToken);
+    //    response.TotalCount = await query.CountAsync(cancellationToken);
 
-        query = query.Paginate(request.PageIndex, request.PageSize);
+    //    query = query.Paginate(request.PageIndex, request.PageSize);
 
-        response.PageIndex = request.PageIndex;
-        response.PageSize = request.PageSize;
-        response.Result = await query
-            .Select(l => new LanguageDto()
-            {
-                Id = l.Id,
-                Code = l.Code,
-                Flag = l.Flag,
-                Name = l.Name
-            })
-            .ToListAsync(cancellationToken);
-        response.SendSuccess();
-        return Ok(response);
-    }
+    //    response.PageIndex = request.PageIndex;
+    //    response.PageSize = request.PageSize;
+    //    response.Result = await query
+    //        .Select(l => new LanguageDto()
+    //        {
+    //            Id = l.Id,
+    //            Code = l.Code,
+    //            Flag = l.Flag,
+    //            Name = l.Name
+    //        })
+    //        .ToListAsync(cancellationToken);
+    //    response.SendSuccess();
+    //    return Ok(response);
+    //}
 }

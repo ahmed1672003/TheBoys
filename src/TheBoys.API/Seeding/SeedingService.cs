@@ -1,23 +1,21 @@
 ﻿using System.Text.Json;
-using TheBoys.API.Data;
 using TheBoys.API.Entities;
+using TheBoys.API.Misc;
 
 namespace TheBoys.API.Seeding;
 
 public class SeedingService : ISeedingService
 {
-    readonly ApplicationDbContext _conetxt;
     readonly IWebHostEnvironment _webHostEnvironment;
 
-    public SeedingService(ApplicationDbContext conetxt, IWebHostEnvironment webHostEnvironment)
+    public SeedingService(IWebHostEnvironment webHostEnvironment)
     {
-        _conetxt = conetxt;
         _webHostEnvironment = webHostEnvironment;
     }
 
     public void SeedLanguages()
     {
-        if (_conetxt.Languages.Any())
+        if (!StaticLanguages.languageModels.Any())
             return;
 
         var fileName = "Languages.json";
@@ -26,9 +24,7 @@ public class SeedingService : ISeedingService
             throw new FileNotFoundException($"File {fileName} not found at path {filePath}");
 
         var languagesJson = File.ReadAllText(filePath);
-        var languages = JsonSerializer.Deserialize<IEnumerable<Language>>(languagesJson);
-        _conetxt.Languages.AddRange(languages);
-
-        _conetxt.SaveChanges();
+        var languages = JsonSerializer.Deserialize<IEnumerable<LanguageModel>>(languagesJson);
+        StaticLanguages.languageModels.AddRange(languages);
     }
 }

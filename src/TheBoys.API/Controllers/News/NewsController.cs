@@ -37,17 +37,15 @@ public class NewsController : ControllerBase
         var response = new PaginationResponse<List<NewsDto>>();
         var query = _context
             .News.AsNoTracking()
-            .AsSplitQuery()
+            .Include(x => x.NewsTranslations)
+            .ThenInclude(x => x.Language)
             .Select(n => new
             {
                 NewsId = n.NewsId,
                 NewsDate = n.NewsDate,
-                IsFeature = n.IsFeature,
+                IsFeatured = n.IsFeatured,
                 NewsImg = n.NewsImg,
-                Translation = n.NewsTranslations.FirstOrDefault(x =>
-                    x.LangId == request.LanguageId
-                ),
-                Images = n.NewsImages
+                Translation = n.NewsTranslations.OrderBy(x => x.LangId).FirstOrDefault()
             });
 
         if (request.Search.HasValue())
@@ -61,7 +59,6 @@ public class NewsController : ControllerBase
         }
 
         response.TotalCount = await query.CountAsync(cancellationToken);
-
         response.Result = await query
             .OrderByDescending(x => x.NewsDate)
             .Paginate(request.PageIndex, request.PageSize)
@@ -70,7 +67,7 @@ public class NewsController : ControllerBase
             {
                 Id = x.NewsId,
                 Date = x.NewsDate,
-                IsFeature = x.IsFeature,
+                IsFeatured = x.IsFeatured,
                 NewsImg = x.NewsImg,
                 NewsDetails =
                     x.Translation == null
@@ -85,11 +82,15 @@ public class NewsController : ControllerBase
                             Source = x.Translation.NewsSource,
                             ImgAlt = x.Translation.ImgAlt
                         },
-                Images = x
-                    .Images.Select(img => new NewsImageDto { Id = img.Id, Url = img.NewsUrl })
-                    .ToList()
             })
             .ToListAsync(cancellationToken);
+
+        if (response.Result is not null && !response.Result.Any())
+        {
+            foreach (var item in response.Result)
+            { }
+        }
+
         response.Count = response.Result.Count;
         response.PageIndex = request.PageIndex;
         response.PageSize = request.PageSize;
@@ -129,13 +130,12 @@ public class NewsController : ControllerBase
         response.Result = await _context
             .News.AsNoTracking()
             .Include(x => x.NewsTranslations)
-            .Include(x => x.NewsImages)
             .Where(x => x.NewsId == id)
             .Select(news => new NewsDto()
             {
                 Id = news.NewsId,
                 Date = news.NewsDate,
-                IsFeature = news.IsFeature,
+                IsFeatured = news.IsFeatured,
                 NewsImg = news.NewsImg,
                 NewsDetails =
                     news.NewsTranslations != null && news.NewsTranslations.Any()
@@ -152,9 +152,6 @@ public class NewsController : ControllerBase
                             })
                             .FirstOrDefault(x => x.LanguageId == lid)
                         : null,
-                Images = news
-                    .NewsImages.Select(img => new NewsImageDto() { Id = img.Id, Url = img.NewsUrl })
-                    .ToList(),
             })
             .FirstOrDefaultAsync(cancellationToken);
 

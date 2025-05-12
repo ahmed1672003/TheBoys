@@ -1,4 +1,6 @@
-﻿namespace TheBoys.API.Dtos;
+﻿using TheBoys.API.Entities;
+
+namespace TheBoys.API.Dtos;
 
 public class NewsTranslationDto
 {
@@ -9,4 +11,5 @@ public class NewsTranslationDto
     public string Body { get; set; }
     public string Source { get; set; }
     public string ImgAlt { get; set; }
+    public LanguageModel Language { get; set; }
 }
