@@ -40,6 +40,7 @@ public class NewsController : ControllerBase
             .News.AsNoTracking()
             .Include(x => x.NewsTranslations)
             .ThenInclude(x => x.Language)
+            .Where(x => x.Published && x.NewsTranslations != null)
             .Select(n => new
             {
                 NewsId = n.NewsId,
