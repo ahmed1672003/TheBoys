@@ -6,6 +6,7 @@ using TheBoys.API.Controllers.News.Requests;
 using TheBoys.API.Data;
 using TheBoys.API.Dtos;
 using TheBoys.API.Extensions;
+using TheBoys.API.Misc;
 
 namespace TheBoys.API.Controllers.News;
 
@@ -121,6 +122,7 @@ public class NewsController : ControllerBase
         response.Result = await _context
             .News.AsNoTracking()
             .Include(x => x.NewsTranslations)
+            .ThenInclude(x => x.Language)
             .Where(x => x.NewsId == id)
             .Select(news => new NewsDto()
             {
@@ -144,8 +146,27 @@ public class NewsController : ControllerBase
                             })
                             .FirstOrDefault(x => x.LanguageId == lid)
                         : null,
+                Languages = news
+                    .NewsTranslations.Select(x => new Entities.LanguageModel()
+                    {
+                        Id = x.Language.Id,
+                        Code = x.Language.LCID,
+                    })
+                    .ToList()
             })
             .FirstOrDefaultAsync(cancellationToken);
+
+        foreach (var language in response.Result.Languages)
+        {
+            var exactLanguage = StaticLanguages.languageModels.FirstOrDefault(x =>
+                x.Code.Trim().ToLower() == language.Code.Trim().ToLower()
+            );
+
+            if (exactLanguage is null)
+                continue;
+            language.Flag = exactLanguage.Flag;
+            language.Name = exactLanguage.Name;
+        }
 
         return Ok(response);
     }

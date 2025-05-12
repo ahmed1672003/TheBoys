@@ -15,7 +15,7 @@ public class SeedingService : ISeedingService
 
     public void SeedLanguages()
     {
-        if (!StaticLanguages.languageModels.Any())
+        if (StaticLanguages.languageModels.Any())
             return;
 
         var fileName = "Languages.json";

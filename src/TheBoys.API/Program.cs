@@ -124,13 +124,10 @@ public class Program
         });
         var app = builder.Build();
         #region seeding
-        if (app.Environment.IsDevelopment())
+        using (var scope = app.Services.CreateScope())
         {
-            using (var scope = app.Services.CreateScope())
-            {
-                var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
-                seedingService.SeedLanguages();
-            }
+            var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
+            seedingService.SeedLanguages();
         }
         #endregion
         app.UseCors("the.boys.policy");
