@@ -54,14 +54,12 @@ public class NewsController : ControllerBase
         {
             query = query.Where(x =>
                 EF.Functions.Like(x.Translation.NewsHead, $"%{request.Search}%")
-                || EF.Functions.Like(x.Translation.NewsBody, $"%{request.Search}%")
-                || EF.Functions.Like(x.Translation.NewsAbbr, $"%{request.Search}%")
-                || EF.Functions.Like(x.Translation.NewsSource, $"%{request.Search}%")
             );
         }
 
         response.TotalCount = await query.CountAsync(cancellationToken);
         response.Result = await query
+            .AsSplitQuery()
             .OrderByDescending(x => x.NewsDate)
             .Paginate(request.PageIndex, request.PageSize)
             .Where(x => x.Translation != null)
