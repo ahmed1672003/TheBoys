@@ -40,14 +40,18 @@ public class NewsController : ControllerBase
             .News.AsNoTracking()
             .Include(x => x.NewsTranslations)
             .ThenInclude(x => x.Language)
-            .Where(x => x.Published && x.NewsTranslations != null)
+            .Where(x =>
+                x.Published
+                && x.NewsTranslations != null
+                && x.NewsTranslations.Any(x => x.LangId == request.LanguageId)
+            )
             .Select(n => new
             {
                 NewsId = n.NewsId,
                 NewsDate = n.NewsDate,
                 IsFeatured = n.IsFeatured,
                 NewsImg = n.NewsImg,
-                Translation = n.NewsTranslations.OrderBy(x => x.LangId).FirstOrDefault()
+                Translation = n.NewsTranslations.FirstOrDefault(x => x.LangId == request.LanguageId)
             });
 
         if (request.Search.HasValue())
