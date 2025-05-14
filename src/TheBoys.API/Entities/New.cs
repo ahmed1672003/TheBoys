@@ -18,7 +18,7 @@ public class News
     public Guid OwnerId { get; set; }
 
     [Column("currentNews_date")]
-    public DateTime CurrentNewData { get; set; }
+    public DateTime CurrentNewDate { get; set; }
 
     [Column("Published")]
     public bool Published { get; set; }

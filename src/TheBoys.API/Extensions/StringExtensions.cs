@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using TheBoys.API.Misc;
 
 namespace TheBoys.API.Extensions;
 
@@ -6,6 +7,15 @@ public static class StringExtensions
 {
     public static bool HasValue(this string value) =>
         value is not null && !string.IsNullOrWhiteSpace(value) && !string.IsNullOrEmpty(value);
+
+    public static string GetFullPath(Guid ownerId, string imgName)
+    {
+        if (ImageHelper.images.TryGetValue(ownerId.ToString(), out string path))
+        {
+            return $"{path}{imgName}";
+        }
+        return imgName;
+    }
 
     public static string StripHtml(string html)
     {

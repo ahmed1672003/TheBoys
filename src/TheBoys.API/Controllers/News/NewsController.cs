@@ -51,6 +51,7 @@ public class NewsController : ControllerBase
                 NewsDate = n.NewsDate,
                 IsFeatured = n.IsFeatured,
                 NewsImg = n.NewsImg,
+                OwnerId = n.OwnerId,
                 Translation = n.NewsTranslations.FirstOrDefault(x => x.LangId == request.LanguageId)
             });
 
@@ -72,8 +73,7 @@ public class NewsController : ControllerBase
                 Id = x.NewsId,
                 Date = x.NewsDate,
                 IsFeatured = x.IsFeatured,
-                NewsImg =
-                    "https://mu.menofia.edu.eg/PrtlFiles/uni/Portal/Images/272eb211-d9d6-4109-926a-dd801722feed.png",
+                NewsImg = StringExtensions.GetFullPath(x.OwnerId, x.NewsImg),
                 NewsDetails =
                     x.Translation == null
                         ? null!
@@ -132,8 +132,7 @@ public class NewsController : ControllerBase
                 Id = news.NewsId,
                 Date = news.NewsDate,
                 IsFeatured = news.IsFeatured,
-                NewsImg =
-                    "https://mu.menofia.edu.eg/PrtlFiles/uni/Portal/Images/272eb211-d9d6-4109-926a-dd801722feed.png",
+                NewsImg = news.NewsImg,
                 NewsDetails =
                     news.NewsTranslations != null && news.NewsTranslations.Any()
                         ? news
