@@ -10,7 +10,7 @@ public static class StringExtensions
 
     public static string GetFullPath(Guid ownerId, string imgName)
     {
-        if (ImageHelper.images.TryGetValue(ownerId.ToString(), out string path))
+        if (ImageHelper.images.TryGetValue(ownerId.ToString().ToLower(), out string path))
         {
             return $"{path}{imgName}";
         }

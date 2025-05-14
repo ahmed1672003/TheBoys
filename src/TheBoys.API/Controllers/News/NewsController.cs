@@ -132,7 +132,7 @@ public class NewsController : ControllerBase
                 Id = news.NewsId,
                 Date = news.NewsDate,
                 IsFeatured = news.IsFeatured,
-                NewsImg = news.NewsImg,
+                NewsImg = StringExtensions.GetFullPath(news.OwnerId, news.NewsImg),
                 NewsDetails =
                     news.NewsTranslations != null && news.NewsTranslations.Any()
                         ? news
