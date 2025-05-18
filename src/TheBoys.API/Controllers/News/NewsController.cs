@@ -63,10 +63,12 @@ public class NewsController : ControllerBase
         }
 
         response.TotalCount = await query.CountAsync(cancellationToken);
+
         response.Result = await query
             .AsSplitQuery()
             .OrderByDescending(x => x.NewsDate)
             .Paginate(request.PageIndex, request.PageSize)
+            .TagWith("OPTION (OPTIMIZE FOR UNKNOWN, FAST 50)")
             .Where(x => x.Translation != null)
             .Select(x => new NewsDto
             {
