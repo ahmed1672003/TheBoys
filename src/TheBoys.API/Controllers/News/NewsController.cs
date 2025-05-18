@@ -58,7 +58,7 @@ public class NewsController : ControllerBase
         if (request.Search.HasValue())
         {
             query = query.Where(x =>
-                EF.Functions.Like(x.Translation.NewsHead, $"%{request.Search}%")
+                EF.Functions.Like(x.Translation.NewsHead, $"{request.Search}%")
             );
         }
 
