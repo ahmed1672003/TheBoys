@@ -69,6 +69,8 @@ public class Program
                         .SetIsOriginAllowed(origin =>
                             origin.StartsWith("http://localhost:5173")
                             || origin == "http://193.227.24.31:5000"
+                            || origin == "http://stage.menofia.edu.eg:5000"
+                            || origin == "https://stage.menofia.edu.eg:5000"
                         )
                         .SetPreflightMaxAge(TimeSpan.FromMinutes(30))
             );
