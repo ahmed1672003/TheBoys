@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
-using TheBoys.API.Entities;
-using TheBoys.API.Misc;
+using TheBoys.Shared.Misc;
 
 namespace TheBoys.API.Seeding;
 

@@ -1,4 +1,4 @@
-﻿using TheBoys.API.Enums;
+﻿using TheBoys.Shared.Enums;
 
 namespace TheBoys.API.Controllers.Mails.Requests;
 

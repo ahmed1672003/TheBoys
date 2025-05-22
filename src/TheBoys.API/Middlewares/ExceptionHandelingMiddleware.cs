@@ -1,13 +1,12 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Options;
-using TheBoys.API.Contracts;
-using TheBoys.API.ExternalServices.Email;
-using TheBoys.API.Settings;
+using TheBoys.Application.Settings;
+using TheBoys.Contracts.Email;
+using TheBoys.Shared.Externals.Email;
 
-namespace ChatSystem.API.Middlewares;
+namespace TheBoys.API.Middlewares;
 
 public sealed class ExceptionHandlingMiddleware : IMiddleware
 {
@@ -32,15 +31,12 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
         catch (Exception ex)
         {
             var alarm = new StringBuilder();
-
-            alarm.AppendLine($"REQUEST URL: {context.Request.GetDisplayUrl()}\n\n");
+            alarm.AppendLine($"REQUEST URL: {context.Request.Path}\n\n");
             alarm.AppendLine($"CONTENT-TYPE: {context.Request.ContentType}\n\n");
             alarm.AppendLine($"IP-ADDRESS: {context.Connection.RemoteIpAddress}\n\n");
 
             foreach (var headerKeyValuePair in context.Request.Headers)
-                alarm.AppendLine(
-                    $"{headerKeyValuePair.Key.ToUpper()}: {headerKeyValuePair.Value}\n\n"
-                );
+                alarm.AppendLine($"{headerKeyValuePair.Key}: {headerKeyValuePair.Value}\n\n");
 
             alarm.AppendLine($"EXCEPTION-MESSAGE: {ex.Message}\n\n");
             alarm.AppendLine($"STACK-TRACE: {ex.StackTrace}\n\n");
@@ -64,7 +60,6 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
             );
 
             await _emailService.SendEmailAsync(emailContract);
-
             var statusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.StatusCode = statusCode;
             await context.Response.WriteAsJsonAsync(
@@ -99,9 +94,9 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
             var bodyAsString = await reader.ReadToEndAsync();
             context.Request.Body.Position = 0;
 
-            return System.Text.Json.JsonSerializer.Serialize(
+            return JsonSerializer.Serialize(
                 JsonDocument.Parse(bodyAsString),
-                new System.Text.Json.JsonSerializerOptions { WriteIndented = true }
+                new JsonSerializerOptions { WriteIndented = true }
             );
         }
         catch (Exception ex)

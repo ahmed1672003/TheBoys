@@ -3,10 +3,10 @@ using System.Threading.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TheBoys.API.Data;
-using TheBoys.API.ExternalServices.Email;
 using TheBoys.API.Seeding;
-using TheBoys.API.Services.News;
+using TheBoys.API.Services.Email;
 using TheBoys.API.Settings;
+using TheBoys.Shared.Externals.Email;
 
 namespace TheBoys.API;
 
@@ -57,7 +57,6 @@ public class Program
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
         });
-
         builder.Services.AddCors(cors =>
         {
             cors.AddPolicy(
@@ -103,7 +102,6 @@ public class Program
         builder.Services.AddSingleton(sp =>
             builder.Configuration.GetSection(nameof(EmailSettings)).Get<EmailSettings>()
         );
-        builder.Services.AddScoped<INewsDaoService, NewsDaoService>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ISeedingService, SeedingService>();
         builder.Services.AddRateLimiter(options =>

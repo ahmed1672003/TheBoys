@@ -1,4 +1,4 @@
-﻿using TheBoys.API.Entities;
+﻿using TheBoys.Shared.Misc;
 
 namespace TheBoys.API.Dtos;
 

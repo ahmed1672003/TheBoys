@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TheBoys.API.Bases.Responses;
+namespace TheBoys.API.Base.Responses;
 
 public record ResponseOf<TResponse> : Response
 {
