@@ -1,5 +1,6 @@
 ﻿using TheBoys.API.Dtos;
-using TheBoys.Application.Features.News.Queries.Handler.Paginate;
+using TheBoys.Application.Features.News.Queries.GetNews;
+using TheBoys.Application.Features.News.Queries.Paginate;
 using TheBoys.Contracts.News;
 using TheBoys.Domain.Entities.News;
 using TheBoys.Shared.Base.Responses;
@@ -37,5 +38,17 @@ public sealed class PrtlNewsService(IPrtlNewsRepository prtlNewsRepository) : IP
             response.Result.Add(element);
 
         return response;
+    }
+
+    public async Task<ResponseOf<NewsDto>> GetAsync(
+        GetNewsQuery query,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var contract = await prtlNewsRepository.GetAsync(
+            new GetNewsContract() { NewsId = query.Id, LanguageId = query.LanguageId, },
+            cancellationToken
+        );
+        return new ResponseOf<NewsDto>() { Result = contract, Success = true, };
     }
 }

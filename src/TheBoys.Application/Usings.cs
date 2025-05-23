@@ -1,0 +1,10 @@
+﻿global using MediatR;
+global using TheBoys.API.Dtos;
+global using TheBoys.Application.Features.Languages.Queries.Pagiante;
+global using TheBoys.Application.Features.Languages.Service;
+global using TheBoys.Application.Features.News.Queries.GetNews;
+global using TheBoys.Application.Features.News.Queries.Paginate;
+global using TheBoys.Application.Features.News.Service;
+global using TheBoys.Shared.Base.Requests;
+global using TheBoys.Shared.Base.Responses;
+global using TheBoys.Shared.Misc;

@@ -1,5 +1,4 @@
 ﻿using TheBoys.Contracts.News;
-using TheBoys.Shared.Misc;
 
 namespace TheBoys.API.Dtos;
 
@@ -26,16 +25,6 @@ public class NewsDto
 
         if (contarct.Languages is not null && contarct.Languages.Any())
         {
-            dto.Languages = contarct
-                .Languages.Select(l => new LanguageModel()
-                {
-                    Id = l.Id,
-                    Name = l.Name,
-                    Code = l.Code,
-                    Flag = l.Flag
-                })
-                .ToList();
-
             foreach (var language in contarct.Languages)
             {
                 var lang = StaticLanguages.languageModels.FirstOrDefault(x =>
@@ -47,7 +36,7 @@ public class NewsDto
                     dto.Languages.Add(
                         new LanguageModel()
                         {
-                            Id = lang.Id,
+                            Id = language.Id,
                             Code = lang.Code,
                             Flag = lang.Flag,
                             Name = lang.Name

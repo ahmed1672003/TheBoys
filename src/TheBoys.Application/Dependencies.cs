@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using TheBoys.Application.Features.News.Service;
+using TheBoys.Application.Features.ContactUs.Service;
 
 namespace TheBoys.Application;
 
@@ -13,7 +13,10 @@ public static class Dependencies
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
         );
-        services.AddScoped<IPrtlNewsService, PrtlNewsService>();
+        services
+            .AddScoped<IPrtlNewsService, PrtlNewsService>()
+            .AddScoped<IPrtlLanguageService, PrtlLanguageService>()
+            .AddScoped<IContactUsService, ContactUsService>();
         return services;
     }
 }

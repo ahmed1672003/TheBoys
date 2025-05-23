@@ -9,4 +9,8 @@ public interface IPrtlNewsRepository : IRepository<PrtlNews>
         PaginateNewsContract contract,
         CancellationToken cancellationToken = default
     );
+    Task<NewsPaginationContarct.NewsContract> GetAsync(
+        GetNewsContract contract,
+        CancellationToken cancellationToken = default
+    );
 }

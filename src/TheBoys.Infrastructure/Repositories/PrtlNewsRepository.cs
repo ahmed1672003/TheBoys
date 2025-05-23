@@ -1,5 +1,6 @@
 ﻿using TheBoys.Contracts.News;
 using TheBoys.Shared.Extensions;
+using TheBoys.Shared.Misc;
 using static TheBoys.Contracts.News.NewsPaginationContarct;
 
 namespace TheBoys.Infrastructure.Repositories;
@@ -70,6 +71,50 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
                         },
             })
             .ToListAsync(cancellationToken);
+
+        return resultContract;
+    }
+
+    public async Task<NewsContract> GetAsync(
+        GetNewsContract contract,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var resultContract = await _entities
+            .AsNoTracking()
+            .Include(x => x.PrtlNewsTranslations)
+            .ThenInclude(x => x.Lang)
+            .Where(x => x.NewsId == contract.NewsId)
+            .Select(news => new NewsContract()
+            {
+                Id = news.NewsId,
+                Date = news.NewsDate,
+                IsFeatured = news.IsFeatured,
+                NewsImg = StringExtensions.GetFullPath(news.OwnerId.Value, news.NewsImg),
+                NewsDetails =
+                    news.PrtlNewsTranslations != null && news.PrtlNewsTranslations.Any()
+                        ? news
+                            .PrtlNewsTranslations.Select(t => new NewsTranslationContract()
+                            {
+                                Id = t.Id,
+                                Head = StringExtensions.StripHtml(t.NewsHead),
+                                Abbr = StringExtensions.StripHtml(t.NewsAbbr),
+                                Body = StringExtensions.StripHtml(t.NewsBody),
+                                Source = StringExtensions.StripHtml(t.NewsSource),
+                                ImgAlt = t.ImgAlt,
+                                LanguageId = t.LangId,
+                            })
+                            .FirstOrDefault(x => x.LanguageId == contract.LanguageId)
+                        : null,
+                Languages = news
+                    .PrtlNewsTranslations.Select(x => new LanguageModel()
+                    {
+                        Id = x.Lang.LangId,
+                        Code = x.Lang.Lcid,
+                    })
+                    .ToList()
+            })
+            .FirstOrDefaultAsync(cancellationToken);
 
         return resultContract;
     }
