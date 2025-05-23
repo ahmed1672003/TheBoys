@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Options;
@@ -30,6 +29,19 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
         }
         catch (Exception ex)
         {
+            var result = GetStatusCode(ex);
+            await context.Response.WriteAsJsonAsync(
+                new
+                {
+                    Success = false,
+                    Message = result.Message,
+                    StatusCode = result.Code,
+                }
+            );
+            if (result.Code != 500)
+            {
+                return;
+            }
             var alarm = new StringBuilder();
             alarm.AppendLine($"REQUEST URL: {context.Request.GetDisplayUrl()}\n\n");
             alarm.AppendLine($"CONTENT-TYPE: {context.Request.ContentType}\n\n");
@@ -60,16 +72,6 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
             );
 
             await _emailService.SendEmailAsync(emailContract);
-            var statusCode = (int)HttpStatusCode.InternalServerError;
-            context.Response.StatusCode = statusCode;
-            await context.Response.WriteAsJsonAsync(
-                new
-                {
-                    Success = false,
-                    Message = "Oops!! something went wrong",
-                    StatusCode = statusCode,
-                }
-            );
         }
     }
 
@@ -105,4 +107,11 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
             return "UNABLE TO READ BODY";
         }
     }
+
+    private (int Code, string Message) GetStatusCode(Exception ex) =>
+        ex switch
+        {
+            FluentValidation.ValidationException => (400, ex.Message),
+            _ => (500, "Oops!! something went wrong"),
+        };
 }
