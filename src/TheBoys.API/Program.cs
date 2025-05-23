@@ -1,12 +1,16 @@
 using System.Reflection;
 using System.Threading.RateLimiting;
+using Microsoft.Extensions.Localization;
 using Microsoft.OpenApi.Models;
+using TheBoys.API.Localization;
 using TheBoys.API.Middlewares;
 using TheBoys.API.Seeding;
 using TheBoys.Application;
+using TheBoys.Application.Contexts;
 using TheBoys.Application.Externals;
 using TheBoys.Application.Settings;
 using TheBoys.Infrastructure;
+using TheBoys.Shared.Abstractions;
 using TheBoys.Shared.Enums;
 using TheBoys.Shared.Externals.Email;
 
@@ -76,28 +80,19 @@ public class Program
                         .SetPreflightMaxAge(TimeSpan.FromMinutes(30))
             );
         });
-
-        //builder.Services.AddCors(cors =>
-        //{
-        //    cors.AddPolicy(
-        //        "the.boys.policy",
-        //        options =>
-        //            options
-        //                .AllowAnyHeader()
-        //                .AllowAnyMethod()
-        //                .SetIsOriginAllowed(origin => origin == "http://193.227.24.31:5000")
-        //    );
-        //});
-
+        builder.Services.AddSingleton<IStringLocalizer, JsonStringLocalizer>();
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.Configure<EmailSettings>(
             builder.Configuration.GetSection(nameof(EmailSettings))
         );
         builder.Services.AddSingleton(sp =>
             builder.Configuration.GetSection(nameof(EmailSettings)).Get<EmailSettings>()
         );
+        builder.Services.AddScoped<LocalizationMiddleWare>();
         builder.Services.AddScoped<ExceptionHandlingMiddleware>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ISeedingService, SeedingService>();
+        builder.Services.AddScoped<IUserContext, UserContext>();
         builder.Services.AddRateLimiter(options =>
         {
             options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
@@ -126,6 +121,7 @@ public class Program
             );
         var app = builder.Build();
         app.UseMiddleware<ExceptionHandlingMiddleware>();
+        app.UseMiddleware<LocalizationMiddleWare>();
         #region seeding
         using (var scope = app.Services.CreateScope())
         {
@@ -144,8 +140,9 @@ public class Program
         });
         app.MapControllers();
         app.UseStaticFiles();
-        app.UseAuthorization();
+        app.UseAuthentication().UseAuthorization();
         app.MapControllers();
+        app.UseMiddleware<LocalizationMiddleWare>();
         app.Run();
     }
 }

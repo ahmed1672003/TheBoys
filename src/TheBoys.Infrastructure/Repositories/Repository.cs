@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using TheBoys.Domain.Abstractions;
-using TheBoys.Infrastructure.Data;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace TheBoys.Infrastructure.Repositories;
 
@@ -30,5 +29,20 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         _entities.Remove(entity);
         return ValueTask.CompletedTask;
+    }
+
+    public Task<bool> AnyAsync(
+        Expression<Func<TEntity, bool>> filter,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var query = _entities.AsQueryable();
+
+        if (filter is not null)
+        {
+            return query.AnyAsync(filter, cancellationToken);
+        }
+
+        return query.AnyAsync(cancellationToken);
     }
 }

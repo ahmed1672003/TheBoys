@@ -2,5 +2,6 @@
 
 public enum CustomClaimType
 {
-    UserId
+    UserId,
+    Language
 }

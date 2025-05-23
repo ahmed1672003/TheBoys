@@ -1,0 +1,6 @@
+{
+  // news
+  "NewsNotFoundWithThisLanguage": "This news is not translated into this language",
+  "EmailRequired": "Email required",
+  "EmailNotValid": "Email not valid"
+}

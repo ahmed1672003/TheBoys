@@ -42,4 +42,36 @@ public class UserContext : IUserContext
             }
         }
     }
+
+    public (bool Exist, string Value) Language
+    {
+        get
+        {
+            if (_httpContextAccessor is not { HttpContext: null })
+            {
+                var requestedCulture = _httpContextAccessor
+                    .HttpContext.Request.Headers["Accept-Language"]
+                    .ToString();
+
+                if (
+                    requestedCulture.ToLower() == "ar".ToLower()
+                    || requestedCulture.ToLower() == "en".ToLower()
+                )
+                    return (true, requestedCulture);
+                else
+                {
+                    var language = _httpContextAccessor
+                        .HttpContext.User.Claims.FirstOrDefault(x =>
+                            x.Type == nameof(CustomClaimType.Language)
+                        )
+                        ?.Value;
+                    if (language is not null)
+                        return (false, language);
+                }
+
+                return (true, "ar-EG");
+            }
+            return (false, default);
+        }
+    }
 }

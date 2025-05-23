@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace TheBoys.Domain.Abstractions;
 
@@ -15,4 +16,9 @@ public interface IRepository<TEntity>
     );
 
     ValueTask DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
+
+    Task<bool> AnyAsync(
+        Expression<Func<TEntity, bool>> filter,
+        CancellationToken cancellationToken = default
+    );
 }

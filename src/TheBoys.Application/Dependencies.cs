@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
-using TheBoys.Application.Features.ContactUs.Service;
+﻿using TheBoys.Application.PipelineBehaviors;
 
 namespace TheBoys.Application;
 
@@ -13,6 +11,8 @@ public static class Dependencies
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())
         );
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services
             .AddScoped<IPrtlNewsService, PrtlNewsService>()
             .AddScoped<IPrtlLanguageService, PrtlLanguageService>()
