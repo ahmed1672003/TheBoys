@@ -1,4 +1,4 @@
-﻿namespace TheBoys.Contracts.Email;
+﻿namespace TheBoys.Shared.Externals.Email;
 
 public sealed record MailAddressContract(
     string Host,

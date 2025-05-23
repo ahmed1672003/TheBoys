@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Options;
 using TheBoys.Application.Settings;
-using TheBoys.Contracts.Email;
 using TheBoys.Shared.Externals.Email;
 
 namespace TheBoys.API.Middlewares;
@@ -31,7 +31,7 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
         catch (Exception ex)
         {
             var alarm = new StringBuilder();
-            alarm.AppendLine($"REQUEST URL: {context.Request.Path}\n\n");
+            alarm.AppendLine($"REQUEST URL: {context.Request.GetDisplayUrl()}\n\n");
             alarm.AppendLine($"CONTENT-TYPE: {context.Request.ContentType}\n\n");
             alarm.AppendLine($"IP-ADDRESS: {context.Connection.RemoteIpAddress}\n\n");
 
@@ -54,7 +54,7 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
                 _emailSettings.MailSender,
                 "The Boys Error",
                 new List<string>() { _emailSettings.MailSender },
-                "EXCEPTION HAPPPEN",
+                "EXCEPTION HAPPPEN From MF Portal",
                 alarm.ToString(),
                 false
             );

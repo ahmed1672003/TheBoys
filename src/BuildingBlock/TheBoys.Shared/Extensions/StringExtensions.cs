@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using TheBoys.API.Misc;
+using TheBoys.Shared.Misc;
 
-namespace TheBoys.API.Extensions;
+namespace TheBoys.Shared.Extensions;
 
 public static class StringExtensions
 {

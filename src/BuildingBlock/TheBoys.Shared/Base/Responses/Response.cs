@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json.Serialization;
 
-namespace TheBoys.API.Base.Responses;
+namespace TheBoys.Shared.Base.Responses;
 
 public record Response
 {

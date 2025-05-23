@@ -1,8 +1,8 @@
 ﻿using TheBoys.Shared.Misc;
 
-namespace TheBoys.API.Dtos;
+namespace TheBoys.Contracts.News;
 
-public class NewsTranslationDto
+public class NewsTranslationContract
 {
     public int Id { get; set; }
     public int LanguageId { get; set; }

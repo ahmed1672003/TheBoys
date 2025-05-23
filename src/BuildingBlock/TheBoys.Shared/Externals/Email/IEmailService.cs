@@ -1,6 +1,4 @@
-﻿using TheBoys.Contracts.Email;
-
-namespace TheBoys.Shared.Externals.Email;
+﻿namespace TheBoys.Shared.Externals.Email;
 
 public interface IEmailService
 {

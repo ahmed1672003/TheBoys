@@ -1,11 +1,13 @@
 using System.Reflection;
 using System.Threading.RateLimiting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using TheBoys.API.Data;
+using TheBoys.API.Middlewares;
 using TheBoys.API.Seeding;
-using TheBoys.API.Services.Email;
-using TheBoys.API.Settings;
+using TheBoys.Application;
+using TheBoys.Application.Externals;
+using TheBoys.Application.Settings;
+using TheBoys.Infrastructure;
+using TheBoys.Shared.Enums;
 using TheBoys.Shared.Externals.Email;
 
 namespace TheBoys.API;
@@ -87,21 +89,13 @@ public class Program
         //    );
         //});
 
-        builder.Services.AddDbContext<ApplicationDbContext>(cfg =>
-            cfg.UseSqlServer(
-                builder.Configuration.GetConnectionString(
-                    builder.Environment.IsDevelopment()
-                        ? "LocalDatabaseConnection"
-                        : "ProductionDatabaseConnection"
-                )
-            )
-        );
         builder.Services.Configure<EmailSettings>(
             builder.Configuration.GetSection(nameof(EmailSettings))
         );
         builder.Services.AddSingleton(sp =>
             builder.Configuration.GetSection(nameof(EmailSettings)).Get<EmailSettings>()
         );
+        builder.Services.AddScoped<ExceptionHandlingMiddleware>();
         builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<ISeedingService, SeedingService>();
         builder.Services.AddRateLimiter(options =>
@@ -122,7 +116,16 @@ public class Program
             );
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
         });
+        builder
+            .Services.RegisterApplicationDependencies()
+            .RegisterInfrastructureDependencies(
+                builder.Configuration,
+                builder.Environment.IsDevelopment()
+                    ? EnvironmentType.Development
+                    : EnvironmentType.Production
+            );
         var app = builder.Build();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
         #region seeding
         using (var scope = app.Services.CreateScope())
         {

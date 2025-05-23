@@ -1,4 +1,4 @@
-﻿namespace TheBoys.API.Extensions;
+﻿namespace TheBoys.Shared.Extensions;
 
 public static class QueryableExtensions
 {

@@ -1,6 +1,6 @@
-﻿namespace TheBoys.API.Base.Requests;
+﻿namespace TheBoys.Shared.Base.Requests;
 
-public class PaginateRequest
+public record PaginateRequest
 {
     public virtual int PageIndex { get; set; } = 1;
     public virtual int PageSize { get; set; } = 10;

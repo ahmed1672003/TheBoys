@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using TheBoys.Contracts.Email;
 using TheBoys.Shared.Externals.Email;
 
-namespace TheBoys.API.Services.Email;
+namespace TheBoys.Application.Externals;
 
 public class EmailService : IEmailService
 {
