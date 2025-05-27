@@ -5,7 +5,11 @@ namespace TheBoys.Shared.Base.Responses;
 
 public record Response
 {
-    public Response() => StatusCode = (int)HttpStatusCode.OK;
+    public Response()
+    {
+        StatusCode = (int)HttpStatusCode.OK;
+        Success = true;
+    }
 
     [JsonPropertyOrder(1)]
     public bool Success { get; set; }

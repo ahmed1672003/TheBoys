@@ -130,6 +130,7 @@ public class Program
         }
         #endregion
         app.UseCors("the.boys.policy");
+        app.UseHttpsRedirection();
         app.UseSwagger();
         app.UseSwaggerUI(c =>
         {

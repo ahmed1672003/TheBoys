@@ -1,9 +1,4 @@
-﻿using TheBoys.API.Dtos;
-using TheBoys.Application.Features.News.Queries.GetNews;
-using TheBoys.Application.Features.News.Queries.Paginate;
-using TheBoys.Contracts.News;
-using TheBoys.Domain.Entities.News;
-using TheBoys.Shared.Base.Responses;
+﻿using TheBoys.Contracts.News;
 
 namespace TheBoys.Application.Features.News.Service;
 
@@ -31,7 +26,7 @@ public sealed class PrtlNewsService(IPrtlNewsRepository prtlNewsRepository) : IP
             PageIndex = query.PageIndex,
             Result = new(),
             Count = contract.Elements.Count,
-            TotalCount = contract.TotalCount
+            TotalCount = contract.TotalCount,
         };
 
         foreach (var element in contract.Elements)
