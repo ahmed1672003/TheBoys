@@ -130,19 +130,17 @@ public class Program
         app.UseStaticFiles();
         app.UseRouting();
         app.UseHttpsRedirection();
-        // app.UseSwagger();
-        //app.UseSwagger(c =>
-        //{
-        //    c.RouteTemplate = "swagger/{documentName}/swagger.json";
-        //});
-        //app.UseSwaggerUI(c =>
-        //{
-        //    c.DisplayRequestDuration();
-        //    c.EnableFilter();
-        //    c.EnablePersistAuthorization();
-        //    c.SwaggerEndpoint("/swagger/the.boys.api/swagger.json", "the.boys.api");
-        //    c.RoutePrefix = "swagger";
-        //});
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.DisplayRequestDuration();
+                c.EnableFilter();
+                c.EnablePersistAuthorization();
+                c.SwaggerEndpoint("/swagger/the.boys.api/swagger.json", "the.boys.api");
+            });
+        }
         app.MapControllers();
         app.MapFallbackToFile("index.html");
         app.UseAuthentication().UseAuthorization();
