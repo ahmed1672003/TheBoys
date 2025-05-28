@@ -67,17 +67,14 @@ public class Program
         {
             cors.AddPolicy(
                 "the.boys.policy",
-                options =>
-                    options
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .SetIsOriginAllowed(origin =>
-                            origin.StartsWith("http://localhost:5173")
-                            || origin == "http://193.227.24.31:5000"
-                            || origin == "http://stage.menofia.edu.eg:5000"
-                            || origin == "https://stage.menofia.edu.eg:5000"
-                        )
-                        .SetPreflightMaxAge(TimeSpan.FromMinutes(30))
+                options => options.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+            //.SetIsOriginAllowed(origin =>
+            //    origin.StartsWith("http://localhost:5173")
+            //    || origin == "http://193.227.24.31:5000"
+            //    || origin == "http://stage.menofia.edu.eg:5000"
+            //    || origin == "https://stage.menofia.edu.eg:5000"
+            //)
+            //.SetPreflightMaxAge(TimeSpan.FromMinutes(30))
             );
         });
         builder.Services.AddSingleton<IStringLocalizer, JsonStringLocalizer>();
@@ -130,19 +127,25 @@ public class Program
         }
         #endregion
         app.UseCors("the.boys.policy");
-        app.UseHttpsRedirection();
-        app.UseSwagger();
-        app.UseSwaggerUI(c =>
-        {
-            c.SwaggerEndpoint("/swagger/the.boys.api/swagger.json", "the.boys.api");
-            c.DisplayRequestDuration();
-            c.EnableFilter();
-            c.EnablePersistAuthorization();
-        });
-        app.MapControllers();
         app.UseStaticFiles();
-        app.UseAuthentication().UseAuthorization();
+        app.UseRouting();
+        app.UseHttpsRedirection();
+        // app.UseSwagger();
+        //app.UseSwagger(c =>
+        //{
+        //    c.RouteTemplate = "swagger/{documentName}/swagger.json";
+        //});
+        //app.UseSwaggerUI(c =>
+        //{
+        //    c.DisplayRequestDuration();
+        //    c.EnableFilter();
+        //    c.EnablePersistAuthorization();
+        //    c.SwaggerEndpoint("/swagger/the.boys.api/swagger.json", "the.boys.api");
+        //    c.RoutePrefix = "swagger";
+        //});
         app.MapControllers();
+        app.MapFallbackToFile("index.html");
+        app.UseAuthentication().UseAuthorization();
         app.UseMiddleware<LocalizationMiddleWare>();
         app.Run();
     }

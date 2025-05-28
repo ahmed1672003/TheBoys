@@ -120,11 +120,6 @@
     "Flag": "https://flagcdn.com/w80/ru.png"
   },
   {
-    "Code": "ch",
-    "Name": "Chamorro",
-    "Flag": "https://flagcdn.com/w80/mp.png"
-  },
-  {
     "Code": "co",
     "Name": "Corsican",
     "Flag": "https://flagcdn.com/w80/fr.png"
@@ -188,11 +183,6 @@
     "Code": "en",
     "Name": "English",
     "Flag": "https://flagcdn.com/w80/gb.png"
-  },
-  {
-    "Code": "eo",
-    "Name": "Esperanto",
-    "Flag": ""
   },
   {
     "Code": "es",
