@@ -38,6 +38,11 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
                 )
             });
 
+        if (contract.OwnerId.HasValue)
+        {
+            query = query.Where(x => x.OwnerId == contract.OwnerId.Value);
+        }
+
         if (contract.Search.HasValue())
         {
             query = query.Where(x =>

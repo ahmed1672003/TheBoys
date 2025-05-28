@@ -14,7 +14,10 @@ public static class StringExtensions
         {
             return $"{path}{imgName}";
         }
-        return imgName;
+        else
+        {
+            return $"http://mu.menofia.edu.eg/PrtlFiles/Sectors/Wafiden/Portal/Images/${imgName}";
+        }
     }
 
     public static string StripHtml(string html)

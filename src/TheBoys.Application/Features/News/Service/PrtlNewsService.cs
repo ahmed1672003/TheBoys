@@ -15,7 +15,8 @@ public sealed class PrtlNewsService(IPrtlNewsRepository prtlNewsRepository) : IP
                 LanguageId = query.LanguageId,
                 PageIndex = query.PageIndex,
                 PageSize = query.PageSize > 10 ? 10 : query.PageSize,
-                Search = query.Search
+                Search = query.Search,
+                OwnerId = query.OwnerId
             },
             cancellationToken
         );
