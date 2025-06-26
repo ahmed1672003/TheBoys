@@ -1,4 +1,6 @@
-﻿namespace TheBoys.Infrastructure;
+﻿using TheBoys.Domain.Entities.Users;
+
+namespace TheBoys.Infrastructure;
 
 public static class Dependencies
 {
@@ -21,7 +23,8 @@ public static class Dependencies
             .AddScoped(typeof(IRepository<>), typeof(Repository<>))
             .AddScoped<IPrtlLanguageRepository, PrtlLanguageRepository>()
             .AddScoped<IPrtlNewsRepository, PrtlNewsRepository>()
-            .AddScoped<IPrtlNewsTranslationRepository, PrtlNewsTranslationRepository>();
+            .AddScoped<IPrtlNewsTranslationRepository, PrtlNewsTranslationRepository>()
+            .AddScoped<IUserRepository, UserRepository>();
         return services;
     }
 }
