@@ -35,7 +35,7 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
                 OwnerId = n.OwnerId,
                 Translation = n.PrtlNewsTranslations.FirstOrDefault(x =>
                     x.LangId == contract.LanguageId
-                )
+                ),
             });
 
         if (contract.OwnerId.HasValue)
@@ -70,9 +70,9 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
                             LanguageId = x.Translation.LangId,
                             Head = StringExtensions.StripHtml(x.Translation.NewsHead),
                             Abbr = StringExtensions.StripHtml(x.Translation.NewsAbbr),
-                            Body = StringExtensions.StripHtml(x.Translation.NewsBody),
+                            // Body = StringExtensions.StripHtml(x.Translation.NewsBody),
                             Source = StringExtensions.StripHtml(x.Translation.NewsSource),
-                            ImgAlt = x.Translation.ImgAlt
+                            ImgAlt = x.Translation.ImgAlt,
                         },
             })
             .ToListAsync(cancellationToken);
@@ -117,10 +117,23 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
                         Id = x.Lang.LangId,
                         Code = x.Lang.Lcid,
                     })
-                    .ToList()
+                    .ToList(),
             })
             .FirstOrDefaultAsync(cancellationToken);
 
         return resultContract;
     }
+
+    public async Task<PrtlNews> GetByIdForDeleteAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    ) =>
+        await _entities
+            .Include(x => x.PrtlNewsTranslations)
+            .FirstAsync(x => x.NewsId == id, cancellationToken);
+
+    public async Task<PrtlNews> GetByIdForUpdateAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    ) => await _entities.Include(x => x.PrtlNewsTranslations).FirstAsync(x => x.NewsId == id);
 }

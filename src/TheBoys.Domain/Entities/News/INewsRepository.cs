@@ -13,4 +13,6 @@ public interface IPrtlNewsRepository : IRepository<PrtlNews>
         GetNewsContract contract,
         CancellationToken cancellationToken = default
     );
+    Task<PrtlNews> GetByIdForDeleteAsync(int id, CancellationToken cancellationToken = default);
+    Task<PrtlNews> GetByIdForUpdateAsync(int id, CancellationToken cancellationToken = default);
 }

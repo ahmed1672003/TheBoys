@@ -24,7 +24,8 @@ public static class Dependencies
             .AddScoped<IPrtlLanguageRepository, PrtlLanguageRepository>()
             .AddScoped<IPrtlNewsRepository, PrtlNewsRepository>()
             .AddScoped<IPrtlNewsTranslationRepository, PrtlNewsTranslationRepository>()
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }
