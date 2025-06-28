@@ -13,6 +13,7 @@ internal sealed class PrtlNewsConfiguration : IEntityTypeConfiguration<PrtlNews>
             tb => tb.HasComment("يحتوي على جميع المعلومات الخاصة بالاخبار\r\n")
         );
 
+        builder.Property(x => x.OwnerId).IsRequired(false);
         builder.Property(e => e.NewsId).HasComment("معرف الخبر");
     }
 }

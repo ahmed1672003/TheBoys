@@ -1,6 +1,7 @@
 ﻿using TheBoys.Application.Features.News.Commands.Handler.Create;
 using TheBoys.Application.Features.News.Commands.Handler.Delete;
 using TheBoys.Application.Features.News.Commands.Handler.Update;
+using TheBoys.Application.Features.News.Queries.GetNewsDetails;
 using TheBoys.Contracts.News;
 using TheBoys.Domain.Abstractions;
 
@@ -77,7 +78,7 @@ public sealed class PrtlNewsService(IPrtlNewsRepository prtlNewsRepository, IUni
                 })
                 .ToList(),
         };
-        await prtlNewsRepository.CreateAsync(news, cancellationToken);
+        var entity = await prtlNewsRepository.CreateAsync(news, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return new Response() { Success = true };
     }
@@ -123,5 +124,39 @@ public sealed class PrtlNewsService(IPrtlNewsRepository prtlNewsRepository, IUni
         await prtlNewsRepository.UpdateAsync(news, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return new Response() { Success = true };
+    }
+
+    public async Task<ResponseOf<GetNewsDetailsResult>> GetNewsDetailsAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var news = await prtlNewsRepository.GetNewsDetailsAsync(id, cancellationToken);
+        var result = new GetNewsDetailsResult()
+        {
+            Id = news.NewsId,
+            Date = news.NewsDate,
+            IsFeatured = news.IsFeatured,
+            NewsImg = news.NewsImg,
+            OwnerId = news.OwnerId,
+            Published = news.Published,
+            Translations = news
+                .PrtlNewsTranslations.Select(t => new NewsTranslationDto()
+                {
+                    Id = t.Id,
+                    Abbr = t.NewsAbbr,
+                    Body = t.NewsBody,
+                    Head = t.NewsHead,
+                    ImgAlt = t.ImgAlt,
+                    LanguageId = t.LangId,
+                    Source = t.NewsSource,
+                    Language = StaticLanguages.languageModels.FirstOrDefault(x =>
+                        x.Code.ToLower() == t.Lang.Lcid.ToLower()
+                    ),
+                })
+                .ToList(),
+        };
+
+        return new ResponseOf<GetNewsDetailsResult>() { Success = true, Result = result };
     }
 }

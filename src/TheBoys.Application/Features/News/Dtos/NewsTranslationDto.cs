@@ -1,5 +1,4 @@
 ﻿using TheBoys.Contracts.News;
-using TheBoys.Shared.Misc;
 
 namespace TheBoys.API.Dtos;
 
@@ -25,7 +24,7 @@ public class NewsTranslationDto
             ImgAlt = contract.ImgAlt,
             LanguageId = contract.LanguageId,
             Source = contract.Source,
-            Language = contract.Language
+            Language = contract.Language,
         };
 
         var language = StaticLanguages.languageModels.FirstOrDefault(x =>

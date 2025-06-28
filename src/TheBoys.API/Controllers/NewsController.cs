@@ -1,6 +1,7 @@
 ﻿using TheBoys.Application.Features.News.Commands.Handler.Create;
 using TheBoys.Application.Features.News.Commands.Handler.Delete;
 using TheBoys.Application.Features.News.Commands.Handler.Update;
+using TheBoys.Application.Features.News.Queries.GetNewsDetails;
 
 namespace TheBoys.API.Controllers;
 
@@ -34,8 +35,8 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <returns></returns>
     [HttpGet("{id}/{lid}")]
     public async Task<ActionResult<ResponseOf<NewsDto>>> GetAsync(
-        [Required] [FromRoute] int id,
-        [Required] [FromRoute] int lid,
+        [Required][FromRoute] int id,
+        [Required][FromRoute] int lid,
         CancellationToken cancellationToken = default
     ) => Ok(await mediator.Send(new GetNewsQuery(id, lid), cancellationToken));
 
@@ -58,7 +59,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut()]
-    public async Task<ActionResult<Response>> CreateAsync(
+    public async Task<ActionResult<Response>> UpdateAsync(
         [FromBody] UpdateNewsCommand command,
         CancellationToken cancellationToken
     ) => Ok(await mediator.Send(command, cancellationToken));
@@ -74,4 +75,15 @@ public class NewsController(IMediator mediator) : ControllerBase
         [FromBody] DeleteNewsCommand command,
         CancellationToken cancellationToken
     ) => Ok(await mediator.Send(command, cancellationToken));
+
+    /// <summary>
+    /// get news with full translations
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Response>> GetNewsDtailsAsync(
+        [Required][FromRoute] int id,
+        CancellationToken cancellationToken = default
+    ) => Ok(await mediator.Send(new GetNewsDetailsQuery(id), cancellationToken));
 }

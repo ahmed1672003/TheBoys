@@ -32,6 +32,7 @@ public sealed class UpdateNewsValidator : AbstractValidator<UpdateNewsCommand>
                     return await _prtlNewsTranslationRepository.AnyAsync(x => x.Id == req.Id, ct);
                 }
             )
+            .OverridePropertyName(nameof(UpdateNewsCommand.Translations))
             .WithMessage(_stringLocalizer["newsTranslationNotFound"]);
     }
 }

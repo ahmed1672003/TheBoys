@@ -19,6 +19,12 @@ public sealed class CreateNewsValidator : AbstractValidator<CreateNewsCommand>
             .Must(x => x != null && x.Count >= 1)
             .WithMessage(stringLocalizer["MustAddOneTranslationAtLeast"]);
 
+        RuleFor(x => x.Translations)
+            .Must(x =>
+                x.Select(x => x.LangId).ToHashSet().Count() == x.Select(x => x.LangId).Count()
+            )
+            .WithMessage(_stringLocalizer["Can'tDuplicateLanguageForTranslation"]);
+
         RuleForEach(x => x.Translations)
             .MustAsync(
                 async (req, ct) =>

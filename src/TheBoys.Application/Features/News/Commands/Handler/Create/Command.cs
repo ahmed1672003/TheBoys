@@ -20,8 +20,6 @@ public sealed record CreateNewsCommand : IRequest<Response>
 
         public int LangId { get; set; }
 
-        public int NewsId { get; set; }
-
         public string ImgAlt { get; set; }
     }
 }

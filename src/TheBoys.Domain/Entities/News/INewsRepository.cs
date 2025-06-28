@@ -15,4 +15,6 @@ public interface IPrtlNewsRepository : IRepository<PrtlNews>
     );
     Task<PrtlNews> GetByIdForDeleteAsync(int id, CancellationToken cancellationToken = default);
     Task<PrtlNews> GetByIdForUpdateAsync(int id, CancellationToken cancellationToken = default);
+
+    Task<PrtlNews> GetNewsDetailsAsync(int id, CancellationToken cancellationToken = default);
 }

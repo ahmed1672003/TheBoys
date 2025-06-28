@@ -95,7 +95,9 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
                 Id = news.NewsId,
                 Date = news.NewsDate,
                 IsFeatured = news.IsFeatured,
-                NewsImg = StringExtensions.GetFullPath(news.OwnerId.Value, news.NewsImg),
+                NewsImg = news.OwnerId.HasValue
+                    ? StringExtensions.GetFullPath(news.OwnerId.Value, news.NewsImg)
+                    : string.Empty,
                 NewsDetails =
                     news.PrtlNewsTranslations != null && news.PrtlNewsTranslations.Any()
                         ? news
@@ -136,4 +138,17 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
         int id,
         CancellationToken cancellationToken = default
     ) => await _entities.Include(x => x.PrtlNewsTranslations).FirstAsync(x => x.NewsId == id);
+
+    public async Task<PrtlNews> GetNewsDetailsAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _entities
+            .AsNoTracking()
+            .Where(x => x.NewsId == id)
+            .Include(x => x.PrtlNewsTranslations)
+            .ThenInclude(x => x.Lang)
+            .FirstAsync(cancellationToken);
+    }
 }

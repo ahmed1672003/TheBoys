@@ -17,7 +17,6 @@ public sealed class UpdateNewsCommand : IRequest<Response>
         public string NewsBody { get; set; }
         public string NewsSource { get; set; }
         public int LangId { get; set; }
-        public int NewsId { get; set; }
         public string ImgAlt { get; set; }
     }
 }

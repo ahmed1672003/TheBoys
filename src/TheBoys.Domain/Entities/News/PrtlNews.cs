@@ -32,7 +32,7 @@ public partial class PrtlNews
     [StringLength(50)]
     public string NewsImg { get; set; }
 
-    [Column("Owner_ID")]
+    [Column("Owner_ID", TypeName = "uniqueidentifier")]
     public Guid? OwnerId { get; set; }
 
     public bool Published { get; set; }
