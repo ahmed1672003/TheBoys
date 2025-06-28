@@ -18,6 +18,7 @@ mono_crash.*
 
 db/*
 
+deployment/*
 production/*
 src/TheBoys.API/Data/Migrations
 
