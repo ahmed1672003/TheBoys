@@ -1,3 +1,4 @@
 ﻿namespace TheBoys.Application.Features.Users.Commands.Login;
 
-public sealed record LoginUserCommand(string UserNameOr) { }
+public sealed record LoginUserCommand(string UserNameOrEmail, string Password)
+    : IRequest<ResponseOf<LoginUserResult>>;

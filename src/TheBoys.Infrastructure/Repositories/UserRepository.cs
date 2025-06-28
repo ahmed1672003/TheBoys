@@ -1,4 +1,6 @@
-﻿using TheBoys.Domain.Entities.Users;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
+using TheBoys.Domain.Entities.Users;
 
 namespace TheBoys.Infrastructure.Repositories;
 
@@ -6,4 +8,30 @@ internal sealed class UserRepository : Repository<User>, IUserRepository
 {
     public UserRepository(MnfPortalsDbContext context)
         : base(context) { }
+
+    public async Task<User> GetUserForLoginAsync(
+        string emailOrUserName,
+        CancellationToken cancellationToken = default
+    )
+    {
+        Expression<Func<User, bool>> filter = (User user) =>
+            new EmailAddressAttribute().IsValid(emailOrUserName)
+                ? user.Email.ToLower() == emailOrUserName.ToLower()
+                : user.Username.ToLower() == emailOrUserName;
+
+        return await _entities.Include(x => x.Role).FirstAsync(filter);
+    }
+
+    public async Task<User> GetUserForValidatePasswordAsync(
+        string emailOrUserName,
+        CancellationToken cancellationToken = default
+    )
+    {
+        Expression<Func<User, bool>> filter = (User user) =>
+            new EmailAddressAttribute().IsValid(emailOrUserName)
+                ? user.Email.ToLower() == emailOrUserName.ToLower()
+                : user.Username.ToLower() == emailOrUserName;
+
+        return await _entities.FirstAsync(filter);
+    }
 }

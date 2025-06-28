@@ -1,4 +1,7 @@
-﻿using TheBoys.Domain.Entities.Users;
+﻿using TheBoys.Application.Abstractions;
+using TheBoys.Domain.Entities.Roles;
+using TheBoys.Domain.Entities.Users;
+using TheBoys.Infrastructure.Jwt;
 
 namespace TheBoys.Infrastructure;
 
@@ -24,7 +27,9 @@ public static class Dependencies
             .AddScoped<IPrtlLanguageRepository, PrtlLanguageRepository>()
             .AddScoped<IPrtlNewsRepository, PrtlNewsRepository>()
             .AddScoped<IPrtlNewsTranslationRepository, PrtlNewsTranslationRepository>()
+            .AddScoped<IRoleRepository, RoleRepository>()
             .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IJwtManager, JwtManager>()
             .AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }

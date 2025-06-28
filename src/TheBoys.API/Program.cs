@@ -29,7 +29,7 @@ public class Program
         {
             s.SwaggerDoc(
                 "the.boys.api",
-                new OpenApiInfo { Title = "the.boys.api", Version = "v1", }
+                new OpenApiInfo { Title = "the.boys.api", Version = "v1" }
             );
             s.AddSecurityDefinition(
                 "Bearer",
@@ -41,7 +41,7 @@ public class Program
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     Description =
-                        "If you hit endpoints from swagger, enter token directly | If you hit endpoints from client side app, enter 'Bearer [token]'"
+                        "If you hit endpoints from swagger, enter token directly | If you hit endpoints from client side app, enter 'Bearer [token]'",
                 }
             );
             s.AddSecurityRequirement(
@@ -53,11 +53,11 @@ public class Program
                             Reference = new OpenApiReference
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
+                                Id = "Bearer",
+                            },
                         },
                         Array.Empty<string>()
-                    }
+                    },
                 }
             );
             var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -82,6 +82,9 @@ public class Program
         builder.Services.Configure<EmailSettings>(
             builder.Configuration.GetSection(nameof(EmailSettings))
         );
+        builder.Services.Configure<JwtSettings>(
+            builder.Configuration.GetSection(nameof(JwtSettings))
+        );
         builder.Services.AddSingleton(sp =>
             builder.Configuration.GetSection(nameof(EmailSettings)).Get<EmailSettings>()
         );
@@ -101,7 +104,7 @@ public class Program
                             new FixedWindowRateLimiterOptions
                             {
                                 Window = TimeSpan.FromMinutes(1),
-                                PermitLimit = 50
+                                PermitLimit = 50,
                             }
                     );
                 }

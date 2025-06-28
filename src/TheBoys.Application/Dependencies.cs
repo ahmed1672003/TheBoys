@@ -1,4 +1,7 @@
-﻿using TheBoys.Application.PipelineBehaviors;
+﻿using Microsoft.AspNetCore.Identity;
+using TheBoys.Application.Features.Users.Service;
+using TheBoys.Application.PipelineBehaviors;
+using TheBoys.Domain.Entities.Users;
 
 namespace TheBoys.Application;
 
@@ -14,7 +17,9 @@ public static class Dependencies
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services
+            .AddScoped<IPasswordHasher<User>, PasswordHasher<User>>()
             .AddScoped<IPrtlNewsService, PrtlNewsService>()
+            .AddScoped<IUserService, UserService>()
             .AddScoped<IPrtlLanguageService, PrtlLanguageService>()
             .AddScoped<IContactUsService, ContactUsService>();
         return services;

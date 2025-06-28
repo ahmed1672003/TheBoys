@@ -10,8 +10,10 @@
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.6" />
     <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="9.0.5" />
   </ItemGroup>
 
@@ -23,7 +25,6 @@
     <Folder Include="Features\Users\Dtos\" />
     <Folder Include="Features\Users\Login\" />
     <Folder Include="Features\Users\Queries\" />
-    <Folder Include="Features\Users\Service\" />
   </ItemGroup>
 
 </Project>

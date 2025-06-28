@@ -3,5 +3,9 @@
 public enum CustomClaimType
 {
     UserId,
-    Language
+    Role,
+    Phone,
+    Email,
+    Username,
+    Language,
 }

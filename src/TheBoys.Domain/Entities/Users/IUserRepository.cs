@@ -2,4 +2,14 @@
 
 namespace TheBoys.Domain.Entities.Users;
 
-public interface IUserRepository : IRepository<User> { }
+public interface IUserRepository : IRepository<User>
+{
+    Task<User> GetUserForLoginAsync(
+        string emailOrUserName,
+        CancellationToken cancellationToken = default
+    );
+    Task<User> GetUserForValidatePasswordAsync(
+        string emailOrUserName,
+        CancellationToken cancellationToken = default
+    );
+}
