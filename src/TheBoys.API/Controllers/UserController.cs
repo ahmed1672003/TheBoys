@@ -39,7 +39,7 @@ public class UserController(IMediator mediator) : ControllerBase
     /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPut()]
+    [HttpPost("update")]
     [Authorize()]
     public async Task<ActionResult<Response>> UpdateAsync(
         [FromBody] UpdateUserCommand command,
@@ -49,15 +49,14 @@ public class UserController(IMediator mediator) : ControllerBase
     /// <summary>
     /// delete user
     /// </summary>
-    /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete()]
+    [HttpGet("delete/{id}")]
     [Authorize()]
     public async Task<ActionResult<Response>> DeleteUserAsync(
-        [FromBody] DeleteUserCommand command,
+        [FromRoute][Required] int id,
         CancellationToken cancellationToken = default
-    ) => await mediator.Send(command, cancellationToken);
+    ) => await mediator.Send(new DeleteUserCommand(id), cancellationToken);
 
     /// <summary>
     /// get user by id | used from super admin
