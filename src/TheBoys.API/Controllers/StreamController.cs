@@ -42,7 +42,13 @@ public class StreamController : ControllerBase
         var baseUrl = $"{Request.Scheme}://{Request.Host}";
         var fileUrl = $"{baseUrl}/uploads/{fileName}";
 
-        return Ok(new { path = fileUrl, fileName = fileName });
+        return Ok(
+            new ResponseOf<dynamic>
+            {
+                Success = true,
+                Result = new { path = fileUrl, fileName = fileName },
+            }
+        );
     }
 
     [HttpGet("delete/{fileName}")]
@@ -59,6 +65,6 @@ public class StreamController : ControllerBase
 
         System.IO.File.Delete(filePath);
 
-        return Ok(new { message = "File deleted successfully." });
+        return Ok(new Response { Message = "File deleted successfully.", Success = true });
     }
 }
