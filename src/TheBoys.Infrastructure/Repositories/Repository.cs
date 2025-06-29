@@ -45,4 +45,24 @@ public class Repository<TEntity> : IRepository<TEntity>
 
         return query.AnyAsync(cancellationToken);
     }
+
+    public bool Any(
+        Expression<Func<TEntity, bool>> filter,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _entities.Any(filter);
+    }
+
+    public bool Any(CancellationToken cancellationToken = default) => _entities.Any();
+
+    public EntityEntry<TEntity> Create(
+        TEntity entity,
+        CancellationToken cancellationToken = default
+    ) => _entities.Add(entity);
+
+    public void CreateRange(
+        IEnumerable<TEntity> entities,
+        CancellationToken cancellationToken = default
+    ) => _entities.AddRange(entities);
 }

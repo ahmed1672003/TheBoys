@@ -45,11 +45,19 @@ internal sealed class UserRepository : Repository<User>, IUserRepository
             .Include(x => x.Role)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-    public Task<User> GetUserByIdForUpdateAsync(
+    public async Task<User> GetUserByIdForUpdateAsync(
         int id,
         CancellationToken cancellationToken = default
     )
     {
-        return _entities.FirstAsync(x => x.Id == id);
+        return await _entities.FirstAsync(x => x.Id == id);
+    }
+
+    public async Task<User> GetUserByIdForDeleteAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _entities.FirstAsync(x => x.Id == id);
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System.Data;
 using Microsoft.EntityFrameworkCore.Storage;
-using TheBoys.Domain.Abstractions;
-using TheBoys.Infrastructure.Data;
 
 namespace TheBoys.Infrastructure.Repositories;
 
@@ -23,4 +21,6 @@ public sealed class UnitOfWork(MnfPortalsDbContext context) : IUnitOfWork
         int modifiedRows,
         CancellationToken cancellationToken = default
     ) => (await context.SaveChangesAsync(cancellationToken)) == modifiedRows;
+
+    public int SaveChanges() => context.SaveChanges();
 }

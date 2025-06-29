@@ -1,4 +1,5 @@
-﻿using TheBoys.Application.Features.Roles.Queries.GetAll;
+﻿using Microsoft.AspNetCore.Authorization;
+using TheBoys.Application.Features.Roles.Queries.GetAll;
 
 namespace TheBoys.API.Controllers;
 
@@ -12,6 +13,7 @@ public class RoleController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet]
+    [Authorize()]
     public async Task<ActionResult<ResponseOf<List<GetAllRolesResult>>>> GetAllAsync(
         CancellationToken cancellationToken = default
     ) => await mediator.Send(new GetAllRolesQuery(), cancellationToken);

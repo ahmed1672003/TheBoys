@@ -10,6 +10,8 @@ public interface IRepository<TEntity>
         TEntity entity,
         CancellationToken cancellationToken = default
     );
+    EntityEntry<TEntity> Create(TEntity entity, CancellationToken cancellationToken = default);
+    void CreateRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
     ValueTask<EntityEntry<TEntity>> UpdateAsync(
         TEntity entity,
         CancellationToken cancellationToken = default
@@ -21,4 +23,7 @@ public interface IRepository<TEntity>
         Expression<Func<TEntity, bool>> filter,
         CancellationToken cancellationToken = default
     );
+
+    bool Any(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default);
+    bool Any(CancellationToken cancellationToken = default);
 }

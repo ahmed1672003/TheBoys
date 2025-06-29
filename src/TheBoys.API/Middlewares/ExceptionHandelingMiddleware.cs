@@ -70,8 +70,7 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
                 alarm.ToString(),
                 false
             );
-
-            await _emailService.SendEmailAsync(emailContract);
+            Task.Run(async () => await _emailService.SendEmailAsync(emailContract));
         }
     }
 
@@ -84,14 +83,13 @@ public sealed class ExceptionHandlingMiddleware : IMiddleware
 
             context.Request.Body.Position = 0;
 
-            using StreamReader reader =
-                new(
-                    context.Request.Body,
-                    encoding: Encoding.UTF8,
-                    detectEncodingFromByteOrderMarks: false,
-                    bufferSize: 1024,
-                    leaveOpen: true
-                );
+            using StreamReader reader = new(
+                context.Request.Body,
+                encoding: Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: false,
+                bufferSize: 1024,
+                leaveOpen: true
+            );
 
             var bodyAsString = await reader.ReadToEndAsync();
             context.Request.Body.Position = 0;

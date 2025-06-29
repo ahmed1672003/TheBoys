@@ -3,4 +3,5 @@
 public interface ISeedingService
 {
     void SeedLanguages();
+    void SeedRoles();
 }

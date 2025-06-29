@@ -1,4 +1,5 @@
-﻿using TheBoys.Application.Features.News.Commands.Handler.Create;
+﻿using Microsoft.AspNetCore.Authorization;
+using TheBoys.Application.Features.News.Commands.Handler.Create;
 using TheBoys.Application.Features.News.Commands.Handler.Delete;
 using TheBoys.Application.Features.News.Commands.Handler.Update;
 using TheBoys.Application.Features.News.Queries.GetNewsDetails;
@@ -47,6 +48,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPost()]
+    [Authorize()]
     public async Task<ActionResult<Response>> CreateAsync(
         [FromBody] CreateNewsCommand command,
         CancellationToken cancellationToken
@@ -59,6 +61,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpPut()]
+    [Authorize()]
     public async Task<ActionResult<Response>> UpdateAsync(
         [FromBody] UpdateNewsCommand command,
         CancellationToken cancellationToken
@@ -71,7 +74,8 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpDelete()]
-    public async Task<ActionResult<Response>> CreateAsync(
+    [Authorize()]
+    public async Task<ActionResult<Response>> DeleteAsync(
         [FromBody] DeleteNewsCommand command,
         CancellationToken cancellationToken
     ) => Ok(await mediator.Send(command, cancellationToken));
@@ -82,6 +86,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{id}")]
+    [Authorize()]
     public async Task<ActionResult<Response>> GetNewsDtailsAsync(
         [Required][FromRoute] int id,
         CancellationToken cancellationToken = default

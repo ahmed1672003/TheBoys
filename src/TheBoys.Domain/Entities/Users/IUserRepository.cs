@@ -18,4 +18,5 @@ public interface IUserRepository : IRepository<User>
     );
     Task<User> GetUserById(int id, CancellationToken cancellationToken = default);
     Task<User> GetUserByIdForUpdateAsync(int id, CancellationToken cancellationToken = default);
+    Task<User> GetUserByIdForDeleteAsync(int id, CancellationToken cancellationToken = default);
 }

@@ -34,4 +34,5 @@ public interface IUserService
         int userId,
         CancellationToken cancellationToken = default
     );
+    Task<Response> DeleteAsync(int id, CancellationToken cancellationToken = default);
 }

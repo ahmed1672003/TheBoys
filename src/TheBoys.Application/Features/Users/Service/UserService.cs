@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TheBoys.Application.Abstractions;
-using TheBoys.Application.Features.Users.Commands.AddUser;
-using TheBoys.Application.Features.Users.Commands.ChangePassword;
-using TheBoys.Application.Features.Users.Commands.Login;
-using TheBoys.Application.Features.Users.Commands.Update;
 using TheBoys.Application.Features.Users.Queries.GetById;
 using TheBoys.Domain.Abstractions;
 using TheBoys.Domain.Entities.Users;
@@ -128,6 +124,14 @@ internal sealed class UserService(
     {
         var user = await userRepository.GetUserByIdForUpdateAsync(userId, cancellationToken);
         user.HashedPassword = passwordHasher.HashPassword(user, command.NewPassword);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return new Response() { Success = true };
+    }
+
+    public async Task<Response> DeleteAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository.GetUserByIdForDeleteAsync(id, cancellationToken);
+        await userRepository.DeleteAsync(user, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return new Response() { Success = true };
     }

@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TheBoys.API.Localization;
 using TheBoys.API.Middlewares;
@@ -22,47 +24,72 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddControllers();
+        builder.Services.AddAuthentication();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddHttpContextAccessor();
-        builder.Services.AddSwaggerGen(s =>
-        {
-            s.SwaggerDoc(
-                "the.boys.api",
-                new OpenApiInfo { Title = "the.boys.api", Version = "v1" }
-            );
-            s.AddSecurityDefinition(
-                "Bearer",
-                new OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    In = ParameterLocation.Header,
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    Description =
-                        "If you hit endpoints from swagger, enter token directly | If you hit endpoints from client side app, enter 'Bearer [token]'",
-                }
-            );
-            s.AddSecurityRequirement(
-                new OpenApiSecurityRequirement
-                {
+        builder
+            .Services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc(
+                    "the.boys.api",
+                    new OpenApiInfo { Title = "the.boys.api", Version = "v1" }
+                );
+                s.AddSecurityDefinition(
+                    "Bearer",
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        In = ParameterLocation.Header,
+                        Scheme = "Bearer",
+                        BearerFormat = "JWT",
+                        Description =
+                            "If you hit endpoints from swagger, enter token directly | If you hit endpoints from client side app, enter 'Bearer [token]'",
+                    }
+                );
+                s.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement
+                    {
                         {
-                            Reference = new OpenApiReference
+                            new OpenApiSecurityScheme
                             {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer",
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer",
+                                },
                             },
+                            Array.Empty<string>()
                         },
-                        Array.Empty<string>()
-                    },
-                }
-            );
-            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-        });
+                    }
+                );
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                s.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            })
+            .AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwtBearerOptions =>
+            {
+                jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = "MNF",
+                    ValidAudience = "MNF users",
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        System.Text.Encoding.ASCII.GetBytes(
+                            "I4Uv6E3+xK4pt07YHpN4UX8xLpWghBPPr6VLPBxYIJ6E3+xK4pt07YHpN4UX8xLpWghBPPr6VLPBxYIJY="
+                        )
+                    ),
+                };
+            });
         builder.Services.AddCors(cors =>
         {
             cors.AddPolicy(
@@ -103,8 +130,8 @@ public class Program
                         (ip) =>
                             new FixedWindowRateLimiterOptions
                             {
-                                Window = TimeSpan.FromMinutes(1),
-                                PermitLimit = 50,
+                                Window = TimeSpan.FromSeconds(1),
+                                PermitLimit = 20,
                             }
                     );
                 }
@@ -127,6 +154,7 @@ public class Program
         {
             var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
             seedingService.SeedLanguages();
+            // seedingService.SeedRoles();
         }
         #endregion
         app.UseCors("the.boys.policy");

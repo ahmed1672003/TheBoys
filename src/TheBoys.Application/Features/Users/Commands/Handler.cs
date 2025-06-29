@@ -1,17 +1,11 @@
-﻿using TheBoys.Application.Features.Users.Commands.AddUser;
-using TheBoys.Application.Features.Users.Commands.ChangePassword;
-using TheBoys.Application.Features.Users.Commands.Login;
-using TheBoys.Application.Features.Users.Commands.Update;
-using TheBoys.Application.Features.Users.Service;
-using TheBoys.Shared.Abstractions;
-
-namespace TheBoys.Application.Features.Users.Commands;
+﻿namespace TheBoys.Application.Features.Users.Commands;
 
 internal sealed class UserCommandsHandler(IUserService userService, IUserContext userContext)
     : IRequestHandler<AuthUserCommand, ResponseOf<AuthUserResult>>,
         IRequestHandler<UpdateUserCommand, Response>,
         IRequestHandler<AddUserCommand, Response>,
-        IRequestHandler<ChangePasswordCommand, Response>
+        IRequestHandler<ChangePasswordCommand, Response>,
+        IRequestHandler<DeleteUserCommand, Response>
 {
     public Task<ResponseOf<AuthUserResult>> Handle(
         AuthUserCommand request,
@@ -32,4 +26,9 @@ internal sealed class UserCommandsHandler(IUserService userService, IUserContext
         ChangePasswordCommand request,
         CancellationToken cancellationToken
     ) => await userService.ChangePasswordAsync(request, userContext.Id.Value, cancellationToken);
+
+    public async Task<Response> Handle(
+        DeleteUserCommand request,
+        CancellationToken cancellationToken
+    ) => await userService.DeleteAsync(request.Id, cancellationToken);
 }
