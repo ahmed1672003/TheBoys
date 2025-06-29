@@ -154,7 +154,7 @@ public class Program
         {
             var seedingService = scope.ServiceProvider.GetRequiredService<ISeedingService>();
             seedingService.SeedLanguages();
-            seedingService.SeedRoles();
+            //seedingService.SeedRoles();
         }
         #endregion
         app.UseCors("the.boys.policy");

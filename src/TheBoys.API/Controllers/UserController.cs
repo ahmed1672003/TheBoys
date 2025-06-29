@@ -19,7 +19,7 @@ public class UserController(IMediator mediator) : ControllerBase
     /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost("auth")]
+    [HttpPost("a")]
     [AllowAnonymous]
     public async Task<ActionResult<ResponseOf<AuthUserResult>>> AuthAsync(
         [FromBody] AuthUserCommand command,
@@ -45,7 +45,7 @@ public class UserController(IMediator mediator) : ControllerBase
     /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPatch("ch-pa")]
+    [HttpPatch("p")]
     [Authorize()]
     public async Task<ActionResult<Response>> ChangePasswordAsync(
         [FromBody] ChangePasswordCommand command,
@@ -78,11 +78,11 @@ public class UserController(IMediator mediator) : ControllerBase
     ) => await mediator.Send(new GetUserByIdQuery(id), cancellationToken);
 
     /// <summary>
-    /// get user profile | used from via current user to get his profile
+    /// get user profile | used to make current user view his profile
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet()]
+    [HttpGet("p")]
     [Authorize()]
     public async Task<ActionResult<Response>> GetUserProfileAsync(
         CancellationToken cancellationToken = default
