@@ -52,7 +52,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     [Authorize()]
     public async Task<ActionResult<Response>> CreateAsync(
         [FromBody] CreateNewsCommand command,
-        CancellationToken cancellationToken
+        CancellationToken cancellationToken = default
     ) => Ok(await mediator.Send(command, cancellationToken));
 
     /// <summary>
@@ -65,21 +65,20 @@ public class NewsController(IMediator mediator) : ControllerBase
     [Authorize()]
     public async Task<ActionResult<Response>> UpdateAsync(
         [FromBody] UpdateNewsCommand command,
-        CancellationToken cancellationToken
+        CancellationToken cancellationToken = default
     ) => Ok(await mediator.Send(command, cancellationToken));
 
     /// <summary>
     /// delete news
     /// </summary>
-    /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpDelete()]
+    [HttpGet("delete/{id}")]
     [Authorize()]
     public async Task<ActionResult<Response>> DeleteAsync(
-        [FromBody] DeleteNewsCommand command,
-        CancellationToken cancellationToken
-    ) => Ok(await mediator.Send(command, cancellationToken));
+        [Required][FromRoute] int id,
+        CancellationToken cancellationToken = default
+    ) => Ok(await mediator.Send(new DeleteNewsCommand(id), cancellationToken));
 
     /// <summary>
     /// get news with full translations

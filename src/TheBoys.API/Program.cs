@@ -158,9 +158,9 @@ public class Program
             seedingService.SeedUsers();
         }
         #endregion
-        app.UseCors("the.boys.policy");
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseCors("the.boys.policy");
         app.UseHttpsRedirection();
         if (app.Environment.IsDevelopment())
         {
