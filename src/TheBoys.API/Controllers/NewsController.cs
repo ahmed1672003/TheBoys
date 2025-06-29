@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using TheBoys.Application.Features.News.Commands.Handler.Create;
+﻿using TheBoys.Application.Features.News.Commands.Handler.Create;
 using TheBoys.Application.Features.News.Commands.Handler.Delete;
 using TheBoys.Application.Features.News.Commands.Handler.Update;
 using TheBoys.Application.Features.News.Queries.GetNewsDetails;
@@ -17,6 +16,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet()]
+    [AllowAnonymous]
     public async Task<ActionResult<PaginationResponse<List<NewsDto>>>> PaginateAllNewsAsync(
         [FromQuery] PaginateNewsQuery request,
         CancellationToken cancellationToken = default
@@ -35,6 +35,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("{id}/{lid}")]
+    [AllowAnonymous]
     public async Task<ActionResult<ResponseOf<NewsDto>>> GetAsync(
         [Required][FromRoute] int id,
         [Required][FromRoute] int lid,
