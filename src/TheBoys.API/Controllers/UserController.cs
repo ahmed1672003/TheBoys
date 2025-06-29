@@ -1,13 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using TheBoys.Application.Features.Users.Commands.AddUser;
-using TheBoys.Application.Features.Users.Commands.ChangePassword;
-using TheBoys.Application.Features.Users.Commands.Delete;
-using TheBoys.Application.Features.Users.Commands.Login;
-using TheBoys.Application.Features.Users.Commands.Update;
-using TheBoys.Application.Features.Users.Queries.GetById;
-using TheBoys.Application.Features.Users.Queries.GetProfile;
-
-namespace TheBoys.API.Controllers;
+﻿namespace TheBoys.API.Controllers;
 
 [Route("api/v1/user")]
 [ApiController]

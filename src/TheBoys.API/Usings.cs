@@ -1,8 +1,16 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using MediatR;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using TheBoys.API.Dtos;
 global using TheBoys.Application.Features.Languages.Queries.Pagiante;
 global using TheBoys.Application.Features.News.Queries.GetNews;
 global using TheBoys.Application.Features.News.Queries.Paginate;
+global using TheBoys.Application.Features.Users.Commands.AddUser;
+global using TheBoys.Application.Features.Users.Commands.ChangePassword;
+global using TheBoys.Application.Features.Users.Commands.Delete;
+global using TheBoys.Application.Features.Users.Commands.Login;
+global using TheBoys.Application.Features.Users.Commands.Update;
+global using TheBoys.Application.Features.Users.Queries.GetById;
+global using TheBoys.Application.Features.Users.Queries.GetProfile;
 global using TheBoys.Shared.Base.Responses;
