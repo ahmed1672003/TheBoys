@@ -1,4 +1,4 @@
-﻿namespace TheBoys.Application.Features.Users.Commands.Login;
+﻿namespace TheBoys.Application.Features.Users.Commands.Auth;
 
 public sealed record AuthUserResult
 {

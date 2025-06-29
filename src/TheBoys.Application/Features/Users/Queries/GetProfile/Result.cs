@@ -1,6 +1,6 @@
 ﻿using TheBoys.Shared.Enums.Roles;
 
-namespace TheBoys.Application.Features.Users.Queries.GetById;
+namespace TheBoys.Application.Features.Users.Queries.GetProfile;
 
 public sealed record GetUserProfileResult
 {

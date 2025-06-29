@@ -1,4 +1,5 @@
 ﻿using TheBoys.Application.Features.Users.Queries.GetById;
+using TheBoys.Application.Features.Users.Queries.GetProfile;
 using TheBoys.Application.Features.Users.Queries.Paginate;
 
 namespace TheBoys.Application.Features.Users.Service;

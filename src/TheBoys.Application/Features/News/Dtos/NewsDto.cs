@@ -1,6 +1,6 @@
 ﻿using TheBoys.Contracts.News;
 
-namespace TheBoys.API.Dtos;
+namespace TheBoys.Application.Features.News.Dtos;
 
 public class NewsDto
 {

@@ -1,6 +1,6 @@
 ﻿using TheBoys.Domain.Entities.Languages;
 
-namespace TheBoys.Application.Features.News.Commands.Handler.Create;
+namespace TheBoys.Application.Features.News.Commands.Create;
 
 public sealed class CreateNewsValidator : AbstractValidator<CreateNewsCommand>
 {

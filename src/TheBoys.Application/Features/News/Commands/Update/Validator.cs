@@ -1,4 +1,4 @@
-﻿namespace TheBoys.Application.Features.News.Commands.Handler.Update;
+﻿namespace TheBoys.Application.Features.News.Commands.Update;
 
 public sealed class UpdateNewsValidator : AbstractValidator<UpdateNewsCommand>
 {

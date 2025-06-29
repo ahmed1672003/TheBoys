@@ -1,6 +1,6 @@
 ﻿using TheBoys.Application.Features.ContactUs.Commands.SendEmail;
 
-namespace TheBoys.API.Controllers.Mails;
+namespace TheBoys.API.Controllers;
 
 [Route("api/v1/mail")]
 [ApiController]

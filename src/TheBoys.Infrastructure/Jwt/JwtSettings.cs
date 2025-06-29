@@ -1,4 +1,4 @@
-﻿namespace TheBoys.Application.Settings;
+﻿namespace TheBoys.Infrastructure.Jwt;
 
 public sealed class JwtSettings
 {

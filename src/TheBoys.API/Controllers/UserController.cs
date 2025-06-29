@@ -1,5 +1,4 @@
-﻿using TheBoys.Application.Features.Users.Commands.ChangeOtherPassword;
-using TheBoys.Application.Features.Users.Queries.Paginate;
+﻿using TheBoys.Application.Features.Users.Commands.Auth;
 
 namespace TheBoys.API.Controllers;
 

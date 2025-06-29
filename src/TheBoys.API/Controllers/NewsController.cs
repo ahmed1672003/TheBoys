@@ -1,6 +1,8 @@
-﻿using TheBoys.Application.Features.News.Commands.Handler.Create;
+﻿using Microsoft.AspNetCore.Authorization;
+using TheBoys.Application.Features.News.Commands.Create;
 using TheBoys.Application.Features.News.Commands.Handler.Delete;
-using TheBoys.Application.Features.News.Commands.Handler.Update;
+using TheBoys.Application.Features.News.Commands.Update;
+using TheBoys.Application.Features.News.Dtos;
 using TheBoys.Application.Features.News.Queries.GetNewsDetails;
 
 namespace TheBoys.API.Controllers;
@@ -37,8 +39,8 @@ public class NewsController(IMediator mediator) : ControllerBase
     [HttpGet("{id}/{lid}")]
     [AllowAnonymous]
     public async Task<ActionResult<ResponseOf<NewsDto>>> GetAsync(
-        [Required][FromRoute] int id,
-        [Required][FromRoute] int lid,
+        [Required] [FromRoute] int id,
+        [Required] [FromRoute] int lid,
         CancellationToken cancellationToken = default
     ) => Ok(await mediator.Send(new GetNewsQuery(id, lid), cancellationToken));
 
@@ -76,7 +78,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     [HttpGet("delete/{id}")]
     [Authorize()]
     public async Task<ActionResult<Response>> DeleteAsync(
-        [Required][FromRoute] int id,
+        [Required] [FromRoute] int id,
         CancellationToken cancellationToken = default
     ) => Ok(await mediator.Send(new DeleteNewsCommand(id), cancellationToken));
 
@@ -88,7 +90,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     [HttpGet("{id}")]
     [Authorize()]
     public async Task<ActionResult<Response>> GetNewsDtailsAsync(
-        [Required][FromRoute] int id,
+        [Required] [FromRoute] int id,
         CancellationToken cancellationToken = default
     ) => Ok(await mediator.Send(new GetNewsDetailsQuery(id), cancellationToken));
 }

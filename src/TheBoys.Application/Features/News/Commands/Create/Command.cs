@@ -1,4 +1,4 @@
-﻿namespace TheBoys.Application.Features.News.Commands.Handler.Create;
+﻿namespace TheBoys.Application.Features.News.Commands.Create;
 
 public sealed record CreateNewsCommand : IRequest<Response>
 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TheBoys.Application.Abstractions;
 using TheBoys.Application.Features.Users.Queries.GetById;
+using TheBoys.Application.Features.Users.Queries.GetProfile;
 using TheBoys.Application.Features.Users.Queries.Paginate;
 using TheBoys.Contracts.Users;
 using TheBoys.Domain.Abstractions;

@@ -1,4 +1,4 @@
-﻿namespace TheBoys.Application.Features.News.Commands.Handler.Delete;
+﻿namespace TheBoys.Application.Features.News.Commands.Delete;
 
 public sealed class DeleteNewsValidator : AbstractValidator<DeleteNewsCommand>
 {

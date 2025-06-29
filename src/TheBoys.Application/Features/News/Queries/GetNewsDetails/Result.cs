@@ -1,4 +1,6 @@
-﻿namespace TheBoys.Application.Features.News.Queries.GetNewsDetails;
+﻿using TheBoys.Application.Features.News.Dtos;
+
+namespace TheBoys.Application.Features.News.Queries.GetNewsDetails;
 
 public sealed record GetNewsDetailsResult
 {

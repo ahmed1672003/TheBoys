@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using TheBoys.Domain.Entities.Users;
 
-namespace TheBoys.Application.Features.Users.Commands.Login;
+namespace TheBoys.Application.Features.Users.Commands.Auth;
 
 public sealed class LoginUserValidator : AbstractValidator<AuthUserCommand>
 {

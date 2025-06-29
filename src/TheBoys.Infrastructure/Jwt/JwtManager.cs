@@ -4,7 +4,6 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using TheBoys.Application.Abstractions;
-using TheBoys.Application.Settings;
 using TheBoys.Domain.Entities.Users;
 using TheBoys.Shared.Enums.Users;
 using TheBoys.Shared.Extensions;

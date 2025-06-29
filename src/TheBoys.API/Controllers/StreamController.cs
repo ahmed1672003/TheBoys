@@ -1,6 +1,4 @@
-﻿using TheBoys.Shared.Extensions;
-
-namespace TheBoys.API.Controllers;
+﻿namespace TheBoys.API.Controllers;
 
 [Route("api/v1/stream")]
 [ApiController]

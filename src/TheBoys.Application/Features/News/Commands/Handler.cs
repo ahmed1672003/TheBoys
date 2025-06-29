@@ -2,7 +2,7 @@
 using TheBoys.Application.Features.News.Commands.Handler.Delete;
 using TheBoys.Application.Features.News.Commands.Handler.Update;
 
-namespace TheBoys.Application.Features.News.Commands.Handler;
+namespace TheBoys.Application.Features.News.Commands;
 
 internal sealed class PrtlNewsCommandsHandler(IPrtlNewsService prtlNewsService)
     : IRequestHandler<CreateNewsCommand, Response>,
