@@ -10,6 +10,7 @@ public class NewsDto
     public string NewsImg { get; set; }
     public NewsTranslationDto NewsDetails { get; set; }
     public List<LanguageModel> Languages { get; set; }
+    public bool IsEvent { get; set; }
 
     public static implicit operator NewsDto(NewsPaginationContarct.NewsContract contarct)
     {

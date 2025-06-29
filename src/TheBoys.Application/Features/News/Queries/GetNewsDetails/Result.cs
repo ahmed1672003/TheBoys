@@ -10,5 +10,6 @@ public sealed record GetNewsDetailsResult
     public bool Published { get; set; }
     public bool IsFeatured { get; set; }
     public string NewsImg { get; set; }
+    public bool IsEvent { get; set; }
     public List<NewsTranslationDto> Translations { get; set; }
 }

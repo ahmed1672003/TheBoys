@@ -6,6 +6,7 @@ public sealed record CreateNewsCommand : IRequest<Response>
     public string NewsImg { get; set; }
     public bool Published { get; set; }
     public bool IsFeatured { get; set; }
+    public bool IsEvent { get; set; }
     public List<CreateNewsTranslationCommand> Translations { get; set; } = new();
 
     public sealed record CreateNewsTranslationCommand
