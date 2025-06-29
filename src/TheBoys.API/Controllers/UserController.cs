@@ -10,7 +10,7 @@ public class UserController(IMediator mediator) : ControllerBase
     /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPost("a")]
+    [HttpPost("auth")]
     [AllowAnonymous]
     public async Task<ActionResult<ResponseOf<AuthUserResult>>> AuthAsync(
         [FromBody] AuthUserCommand command,
@@ -36,7 +36,7 @@ public class UserController(IMediator mediator) : ControllerBase
     /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPatch("p")]
+    [HttpPatch("password")]
     [Authorize()]
     public async Task<ActionResult<Response>> ChangePasswordAsync(
         [FromBody] ChangePasswordCommand command,
@@ -73,7 +73,7 @@ public class UserController(IMediator mediator) : ControllerBase
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpGet("p")]
+    [HttpGet("profile")]
     [Authorize()]
     public async Task<ActionResult<Response>> GetUserProfileAsync(
         CancellationToken cancellationToken = default
