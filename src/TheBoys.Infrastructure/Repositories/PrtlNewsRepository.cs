@@ -60,7 +60,9 @@ public sealed class PrtlNewsRepository : Repository<PrtlNews>, IPrtlNewsReposito
                 Id = x.NewsId,
                 Date = x.NewsDate,
                 IsFeatured = x.IsFeatured,
-                NewsImg = StringExtensions.GetFullPath(x.OwnerId.Value, x.NewsImg),
+                NewsImg = x.OwnerId.HasValue
+                    ? StringExtensions.GetFullPath(x.OwnerId.Value, x.NewsImg)
+                    : x.NewsImg,
                 NewsDetails =
                     x.Translation == null
                         ? null!
