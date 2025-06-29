@@ -119,13 +119,13 @@ internal sealed class UserService(
     }
 
     public async Task<Response> ChangePasswordAsync(
-        ChangePasswordCommand command,
         int userId,
+        string newPassword,
         CancellationToken cancellationToken = default
     )
     {
         var user = await userRepository.GetUserByIdForUpdateAsync(userId, cancellationToken);
-        user.HashedPassword = passwordHasher.HashPassword(user, command.NewPassword);
+        user.HashedPassword = passwordHasher.HashPassword(user, newPassword);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return new Response() { Success = true };
     }

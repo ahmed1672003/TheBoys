@@ -1,4 +1,5 @@
-﻿using TheBoys.Application.Features.Users.Queries.Paginate;
+﻿using TheBoys.Application.Features.Users.Commands.ChangeOtherPassword;
+using TheBoys.Application.Features.Users.Queries.Paginate;
 
 namespace TheBoys.API.Controllers;
 
@@ -33,19 +34,6 @@ public class UserController(IMediator mediator) : ControllerBase
     ) => await mediator.Send(command, cancellationToken);
 
     /// <summary>
-    /// change password
-    /// </summary>
-    /// <param name="command"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpPatch("password")]
-    [Authorize()]
-    public async Task<ActionResult<Response>> ChangePasswordAsync(
-        [FromBody] ChangePasswordCommand command,
-        CancellationToken cancellationToken = default
-    ) => await mediator.Send(command, cancellationToken);
-
-    /// <summary>
     /// update user
     /// </summary>
     /// <param name="command"></param>
@@ -55,6 +43,19 @@ public class UserController(IMediator mediator) : ControllerBase
     [Authorize()]
     public async Task<ActionResult<Response>> UpdateAsync(
         [FromBody] UpdateUserCommand command,
+        CancellationToken cancellationToken = default
+    ) => await mediator.Send(command, cancellationToken);
+
+    /// <summary>
+    /// delete user
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpDelete()]
+    [Authorize()]
+    public async Task<ActionResult<Response>> DeleteUserAsync(
+        [FromBody] DeleteUserCommand command,
         CancellationToken cancellationToken = default
     ) => await mediator.Send(command, cancellationToken);
 
@@ -82,19 +83,6 @@ public class UserController(IMediator mediator) : ControllerBase
     ) => await mediator.Send(new GetUserProfileQuery(), cancellationToken);
 
     /// <summary>
-    /// delete user
-    /// </summary>
-    /// <param name="command"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
-    [HttpDelete()]
-    [Authorize()]
-    public async Task<ActionResult<Response>> DeleteUserAsync(
-        [FromBody] DeleteUserCommand command,
-        CancellationToken cancellationToken = default
-    ) => await mediator.Send(command, cancellationToken);
-
-    /// <summary>
     /// paginate all users
     /// </summary>
     /// <param name="query"></param>
@@ -108,4 +96,30 @@ public class UserController(IMediator mediator) : ControllerBase
         [FromQuery] PaginateUsersQuery query,
         CancellationToken cancellationToken = default
     ) => await mediator.Send(query, cancellationToken);
+
+    /// <summary>
+    /// change password
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPatch("password")]
+    [Authorize()]
+    public async Task<ActionResult<Response>> ChangePasswordAsync(
+        [FromBody] ChangePasswordCommand command,
+        CancellationToken cancellationToken = default
+    ) => await mediator.Send(command, cancellationToken);
+
+    /// <summary>
+    /// reset other password
+    /// </summary>
+    /// <param name="command"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpPatch("r-password")]
+    [Authorize()]
+    public async Task<ActionResult<Response>> ChangeOtherPassword(
+        [FromBody] ChangeOtherPasswordCommand command,
+        CancellationToken cancellationToken = default
+    ) => await mediator.Send(command, cancellationToken);
 }

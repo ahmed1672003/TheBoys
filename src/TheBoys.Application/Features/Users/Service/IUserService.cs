@@ -27,8 +27,8 @@ public interface IUserService
         CancellationToken cancellationToken = default
     );
     Task<Response> ChangePasswordAsync(
-        ChangePasswordCommand command,
         int userId,
+        string newPassword,
         CancellationToken cancellationToken = default
     );
     Task<Response> DeleteAsync(int id, CancellationToken cancellationToken = default);
