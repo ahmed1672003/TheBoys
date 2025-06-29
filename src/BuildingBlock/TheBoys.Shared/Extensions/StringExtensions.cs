@@ -39,4 +39,13 @@ public static class StringExtensions
         text = text.Trim();
         return text.HasValue() ? text : string.Empty;
     }
+
+    public static bool IsValidPassword(this string password)
+    {
+        if (string.IsNullOrWhiteSpace(password))
+            return false;
+        // at least: 1 Capital char, 1 sympol , min length is 8. P@sswrod
+        string pattern = @"^(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$";
+        return Regex.IsMatch(password, pattern);
+    }
 }

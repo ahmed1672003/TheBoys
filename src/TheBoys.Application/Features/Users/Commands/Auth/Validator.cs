@@ -4,7 +4,7 @@ using TheBoys.Domain.Entities.Users;
 
 namespace TheBoys.Application.Features.Users.Commands.Login;
 
-public sealed class LoginUserValidator : AbstractValidator<LoginUserCommand>
+public sealed class LoginUserValidator : AbstractValidator<AuthUserCommand>
 {
     readonly IStringLocalizer _stringLocalizer;
     readonly IUserRepository _userRepository;

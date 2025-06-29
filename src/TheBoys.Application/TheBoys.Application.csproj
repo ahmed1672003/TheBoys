@@ -23,8 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Users\Dtos\" />
-    <Folder Include="Features\Users\Login\" />
-    <Folder Include="Features\Users\Queries\" />
   </ItemGroup>
 
 </Project>

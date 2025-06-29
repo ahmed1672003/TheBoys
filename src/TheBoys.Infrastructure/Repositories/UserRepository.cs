@@ -34,4 +34,22 @@ internal sealed class UserRepository : Repository<User>, IUserRepository
 
         return await _entities.FirstAsync(filter);
     }
+
+    public Task<User> GetUserForValidatePasswordAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    ) => _entities.FirstAsync(x => x.Id == id, cancellationToken);
+
+    public async Task<User> GetUserById(int id, CancellationToken cancellationToken = default) =>
+        await _entities
+            .Include(x => x.Role)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+    public Task<User> GetUserByIdForUpdateAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return _entities.FirstAsync(x => x.Id == id);
+    }
 }

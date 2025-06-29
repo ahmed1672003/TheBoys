@@ -12,4 +12,10 @@ public interface IUserRepository : IRepository<User>
         string emailOrUserName,
         CancellationToken cancellationToken = default
     );
+    Task<User> GetUserForValidatePasswordAsync(
+        int id,
+        CancellationToken cancellationToken = default
+    );
+    Task<User> GetUserById(int id, CancellationToken cancellationToken = default);
+    Task<User> GetUserByIdForUpdateAsync(int id, CancellationToken cancellationToken = default);
 }

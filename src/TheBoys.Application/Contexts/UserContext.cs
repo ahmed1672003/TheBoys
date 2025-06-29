@@ -15,11 +15,11 @@ public class UserContext : IUserContext
         _httpContext = _httpContextAccessor.HttpContext;
     }
 
-    public (bool Exist, Guid Value) Id
+    public (bool Exist, int Value) Id
     {
         get
         {
-            var result = (false, Guid.Empty);
+            var result = (false, 0);
 
             if (!_httpContext.User.Identity.IsAuthenticated)
             {
@@ -29,7 +29,7 @@ public class UserContext : IUserContext
                 .User.Claims.FirstOrDefault(x => x.Type == nameof(CustomClaimType.UserId))
                 ?.Value;
 
-            if (Guid.TryParse(id, out Guid value))
+            if (int.TryParse(id, out int value))
             {
                 result.Item1 = true;
                 result.Item2 = value;

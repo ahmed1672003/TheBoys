@@ -2,4 +2,7 @@
 
 namespace TheBoys.Domain.Entities.Roles;
 
-public interface IRoleRepository : IRepository<Role> { }
+public interface IRoleRepository : IRepository<Role>
+{
+    Task<List<Role>> GetAllAsync(CancellationToken cancellationToken = default);
+}
