@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TheBoys.Domain.Entities.Users;
-using TheBoys.Shared.Abstractions;
 using TheBoys.Shared.Extensions;
 
 namespace TheBoys.Application.Features.Users.Commands.ChangePassword;
@@ -71,5 +70,9 @@ public sealed class ChangePasswordValidator : AbstractValidator<ChangePasswordCo
                 }
             )
             .WithMessage(_stringLocalizer["IncorrectPassword"]);
+
+        RuleFor(x => x)
+            .Must(req => req.NewPassword != req.OldPassword)
+            .WithMessage(_stringLocalizer["Can'tUseOldPassword"]);
     }
 }

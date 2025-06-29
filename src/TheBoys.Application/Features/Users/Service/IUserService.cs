@@ -1,8 +1,4 @@
-﻿using TheBoys.Application.Features.Users.Commands.AddUser;
-using TheBoys.Application.Features.Users.Commands.ChangePassword;
-using TheBoys.Application.Features.Users.Commands.Login;
-using TheBoys.Application.Features.Users.Commands.Update;
-using TheBoys.Application.Features.Users.Queries.GetById;
+﻿using TheBoys.Application.Features.Users.Queries.GetById;
 
 namespace TheBoys.Application.Features.Users.Service;
 
@@ -35,4 +31,8 @@ public interface IUserService
         CancellationToken cancellationToken = default
     );
     Task<Response> DeleteAsync(int id, CancellationToken cancellationToken = default);
+
+    //Task<PaginationResponse<List<PaginateUsersResult>>> PaginateAsync(
+    //    CancellationToken cancellationToken = default
+    //);
 }

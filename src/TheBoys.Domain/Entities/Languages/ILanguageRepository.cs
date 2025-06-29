@@ -1,5 +1,5 @@
-﻿using TheBoys.Contracts.Languages;
-using TheBoys.Contracts.News;
+﻿using TheBoys.Contracts;
+using TheBoys.Contracts.Languages;
 using TheBoys.Domain.Abstractions;
 
 namespace TheBoys.Domain.Entities.Languages;

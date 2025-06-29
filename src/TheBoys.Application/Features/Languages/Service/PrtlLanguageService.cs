@@ -1,4 +1,5 @@
-﻿using TheBoys.Domain.Entities.Languages;
+﻿using TheBoys.Contracts;
+using TheBoys.Domain.Entities.Languages;
 
 namespace TheBoys.Application.Features.Languages.Service;
 
@@ -11,11 +12,7 @@ public sealed class PrtlLanguageService(IPrtlLanguageRepository prtlLanguageRepo
     )
     {
         var contract = await prtlLanguageRepository.PaginateAsync(
-            new Contracts.News.PaginateContract()
-            {
-                PageIndex = query.PageIndex,
-                PageSize = query.PageSize
-            }
+            new PaginateContract() { PageIndex = query.PageIndex, PageSize = query.PageSize }
         );
         var response = new PaginationResponse<List<LanguageModel>>()
         {
@@ -23,7 +20,7 @@ public sealed class PrtlLanguageService(IPrtlLanguageRepository prtlLanguageRepo
             PageIndex = query.PageIndex,
             Count = contract.Elements.Count,
             TotalCount = contract.TotalCount,
-            Result = new()
+            Result = new(),
         };
 
         foreach (var language in StaticLanguages.languageModels)
@@ -41,7 +38,7 @@ public sealed class PrtlLanguageService(IPrtlLanguageRepository prtlLanguageRepo
                     Id = lang.Id,
                     Name = language.Name,
                     Code = language.Code,
-                    Flag = language.Flag
+                    Flag = language.Flag,
                 }
             );
         }

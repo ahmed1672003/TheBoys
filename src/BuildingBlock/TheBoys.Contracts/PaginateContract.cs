@@ -1,4 +1,4 @@
-﻿namespace TheBoys.Contracts.News;
+﻿namespace TheBoys.Contracts;
 
 public record PaginateContract
 {

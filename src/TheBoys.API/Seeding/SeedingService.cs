@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 using TheBoys.Domain.Abstractions;
 using TheBoys.Domain.Entities.Roles;
+using TheBoys.Domain.Entities.Users;
 using TheBoys.Shared.Enums.Roles;
 using TheBoys.Shared.Misc;
 
@@ -50,6 +52,31 @@ public class SeedingService : ISeedingService
             new Role() { Type = RoleType.Admin },
         };
         roleRepository.CreateRange(roles);
+        unitOfWork.SaveChanges();
+    }
+
+    public void SeedUsers()
+    {
+        var scope = _serviceScopeFactory.CreateScope();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var roleRepository = scope.ServiceProvider.GetRequiredService<IRoleRepository>();
+        var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
+
+        if (userRepository.Any())
+            return;
+
+        var superAdminRole = roleRepository.Get(x => x.Type == RoleType.SuperAdmin);
+        var superAdminUser = new User
+        {
+            Name = "ahmed adel basha",
+            Username = "ahmedadel",
+            Email = "ahmedadel1672003@gmail.com",
+            Phone = "+201018856093",
+            RoleId = superAdminRole.Id,
+        };
+        superAdminUser.HashedPassword = passwordHasher.HashPassword(superAdminUser, "!!!!Test2222");
+        userRepository.Create(superAdminUser);
         unitOfWork.SaveChanges();
     }
 }

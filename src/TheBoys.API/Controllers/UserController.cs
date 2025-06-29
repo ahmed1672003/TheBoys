@@ -82,6 +82,7 @@ public class UserController(IMediator mediator) : ControllerBase
     /// <summary>
     /// delete user
     /// </summary>
+    /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpDelete()]
@@ -89,5 +90,5 @@ public class UserController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<Response>> DeleteUserAsync(
         [FromBody] DeleteUserCommand command,
         CancellationToken cancellationToken = default
-    ) => await mediator.Send(new GetUserProfileQuery(), cancellationToken);
+    ) => await mediator.Send(command, cancellationToken);
 }

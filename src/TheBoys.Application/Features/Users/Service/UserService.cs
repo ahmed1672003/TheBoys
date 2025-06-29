@@ -135,4 +135,11 @@ internal sealed class UserService(
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return new Response() { Success = true };
     }
+
+    //public Task<PaginationResponse<List<PaginateUsersResult>>> PaginateAsync(
+    //    CancellationToken cancellationToken = default
+    //)
+    //{
+    //    var users = userRepository
+    //}
 }

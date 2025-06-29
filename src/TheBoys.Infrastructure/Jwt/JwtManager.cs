@@ -26,6 +26,7 @@ public sealed class JwtManager : IJwtManager
     {
         var claims = new List<Claim>()
         {
+            new(nameof(CustomClaimType.UserId), user.Id.ToString()),
             new(nameof(CustomClaimType.Username), user.Username),
             new(nameof(CustomClaimType.Email), user.Email),
             new(nameof(CustomClaimType.Role), user.Role.Type.ToString()),

@@ -7,10 +7,10 @@ internal sealed class UserCommandsHandler(IUserService userService, IUserContext
         IRequestHandler<ChangePasswordCommand, Response>,
         IRequestHandler<DeleteUserCommand, Response>
 {
-    public Task<ResponseOf<AuthUserResult>> Handle(
+    public async Task<ResponseOf<AuthUserResult>> Handle(
         AuthUserCommand request,
         CancellationToken cancellationToken
-    ) => userService.LoginAsync(request, cancellationToken);
+    ) => await userService.LoginAsync(request, cancellationToken);
 
     public async Task<Response> Handle(
         UpdateUserCommand request,
