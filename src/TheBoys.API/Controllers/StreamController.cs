@@ -14,6 +14,7 @@ public class StreamController : ControllerBase
     }
 
     [HttpPost()]
+    [Authorize]
     public async Task<IActionResult> UploadFile(IFormFile file)
     {
         if (file == null || file.Length == 0)
@@ -30,7 +31,7 @@ public class StreamController : ControllerBase
             Directory.CreateDirectory(uploadsRootFolder);
 
         // Generate unique file name
-        var fileName = $"{Guid.NewGuid()}";
+        var fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
         var filePath = Path.Combine(uploadsRootFolder, fileName);
 
         using (var stream = new FileStream(filePath, FileMode.Create))
@@ -51,6 +52,7 @@ public class StreamController : ControllerBase
         );
     }
 
+    [Authorize]
     [HttpGet("delete/{fileName}")]
     public IActionResult DeleteFile(string fileName)
     {
