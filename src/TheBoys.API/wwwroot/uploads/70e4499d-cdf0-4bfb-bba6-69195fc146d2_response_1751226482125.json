@@ -1,0 +1,74 @@
+{
+  "success": true,
+  "statusCode": 200,
+  "message": null,
+  "pageSize": 10,
+  "pageIndex": 1,
+  "totalCount": 10,
+  "count": 10,
+  "totalPages": 1,
+  "moveNext": false,
+  "movePrevious": false,
+  "result": [
+    {
+      "id": 1,
+      "name": "Arabic",
+      "code": "ar",
+      "flag": "https://flagcdn.com/w80/eg.png"
+    },
+    {
+      "id": 24,
+      "name": "German",
+      "code": "de",
+      "flag": "https://flagcdn.com/w80/de.png"
+    },
+    {
+      "id": 2,
+      "name": "English",
+      "code": "en",
+      "flag": "https://flagcdn.com/w80/gb.png"
+    },
+    {
+      "id": 26,
+      "name": "Persian",
+      "code": "fa",
+      "flag": "https://flagcdn.com/w80/ir.png"
+    },
+    {
+      "id": 3,
+      "name": "French",
+      "code": "fr",
+      "flag": "https://flagcdn.com/w80/fr.png"
+    },
+    {
+      "id": 29,
+      "name": "Italian",
+      "code": "it",
+      "flag": "https://flagcdn.com/w80/it.png"
+    },
+    {
+      "id": 23,
+      "name": "Japanese",
+      "code": "ja",
+      "flag": "https://flagcdn.com/w80/jp.png"
+    },
+    {
+      "id": 27,
+      "name": "Russian",
+      "code": "ru",
+      "flag": "https://flagcdn.com/w80/ru.png"
+    },
+    {
+      "id": 25,
+      "name": "Turkish",
+      "code": "tr",
+      "flag": "https://flagcdn.com/w80/tr.png"
+    },
+    {
+      "id": 28,
+      "name": "Chinese",
+      "code": "ch",
+      "flag": "https://flagcdn.com/w80/cn.png"
+    }
+  ]
+}
