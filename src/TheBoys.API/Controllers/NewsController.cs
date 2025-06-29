@@ -61,7 +61,7 @@ public class NewsController(IMediator mediator) : ControllerBase
     /// <param name="command"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    [HttpPut()]
+    [HttpPost("update")]
     [Authorize()]
     public async Task<ActionResult<Response>> UpdateAsync(
         [FromBody] UpdateNewsCommand command,
