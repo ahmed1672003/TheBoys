@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using TheBoys.Shared.Enums;
 using TheBoys.Shared.Misc;
 
 namespace TheBoys.Shared.Extensions;
@@ -47,5 +48,11 @@ public static class StringExtensions
         // at least: 1 Capital char, 1 sympol , min length is 8. P@sswrod
         string pattern = @"^(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$";
         return Regex.IsMatch(password, pattern);
+    }
+
+    public static bool IsImage(this string fileName)
+    {
+        var extension = Path.GetExtension(fileName)?.TrimStart('.').ToLower();
+        return Enum.TryParse(typeof(ImageExtension), extension, true, out _);
     }
 }

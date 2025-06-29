@@ -1,4 +1,6 @@
-﻿namespace TheBoys.API.Controllers;
+﻿using TheBoys.Shared.Extensions;
+
+namespace TheBoys.API.Controllers;
 
 [Route("api/v1/stream")]
 [ApiController]
@@ -15,7 +17,12 @@ public class StreamController : ControllerBase
     public async Task<IActionResult> UploadFile(IFormFile file)
     {
         if (file == null || file.Length == 0)
-            return BadRequest("No file provided.");
+            return BadRequest("No image provided.");
+
+        if (!file.FileName.IsImage())
+        {
+            return BadRequest("Not supported image extension.");
+        }
 
         // Create uploads folder if it doesn't exist
         var uploadsRootFolder = Path.Combine(_env.WebRootPath, "uploads");
