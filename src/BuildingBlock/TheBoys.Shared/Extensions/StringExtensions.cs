@@ -17,9 +17,13 @@ public static class StringExtensions
         {
             return $"{path}{imgName}";
         }
+        else if (Directory.Exists($"wwwroot/uploads/{imgName}"))
+        {
+            return $"https://stage.menofia.edu.eg/uploads/{imgName}";
+        }
         else
         {
-            return $"http://mu.menofia.edu.eg/PrtlFiles/Sectors/Wafiden/Portal/Images/${imgName}";
+            return $"http://mu.menofia.edu.eg/PrtlFiles/Sectors/Wafiden/Portal/Images/{imgName}";
         }
     }
 

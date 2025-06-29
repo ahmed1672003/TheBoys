@@ -30,7 +30,7 @@ public class StreamController : ControllerBase
             Directory.CreateDirectory(uploadsRootFolder);
 
         // Generate unique file name
-        var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+        var fileName = $"{Guid.NewGuid()}";
         var filePath = Path.Combine(uploadsRootFolder, fileName);
 
         using (var stream = new FileStream(filePath, FileMode.Create))
