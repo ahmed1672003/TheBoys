@@ -1,4 +1,5 @@
 ﻿using TheBoys.Application.Features.Users.Queries.GetById;
+using TheBoys.Application.Features.Users.Queries.Paginate;
 
 namespace TheBoys.Application.Features.Users.Service;
 
@@ -32,7 +33,8 @@ public interface IUserService
     );
     Task<Response> DeleteAsync(int id, CancellationToken cancellationToken = default);
 
-    //Task<PaginationResponse<List<PaginateUsersResult>>> PaginateAsync(
-    //    CancellationToken cancellationToken = default
-    //);
+    Task<PaginationResponse<List<PaginateUsersResult>>> PaginateAsync(
+        PaginateUsersQuery query,
+        CancellationToken cancellationToken = default
+    );
 }

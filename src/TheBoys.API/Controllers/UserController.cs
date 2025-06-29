@@ -1,4 +1,6 @@
-﻿namespace TheBoys.API.Controllers;
+﻿using TheBoys.Application.Features.Users.Queries.Paginate;
+
+namespace TheBoys.API.Controllers;
 
 [Route("api/v1/user")]
 [ApiController]
@@ -91,4 +93,19 @@ public class UserController(IMediator mediator) : ControllerBase
         [FromBody] DeleteUserCommand command,
         CancellationToken cancellationToken = default
     ) => await mediator.Send(command, cancellationToken);
+
+    /// <summary>
+    /// paginate all users
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    [HttpGet()]
+    [Authorize()]
+    public async Task<
+        ActionResult<PaginationResponse<List<PaginateUsersResult>>>
+    > PaginateUsersAsync(
+        [FromQuery] PaginateUsersQuery query,
+        CancellationToken cancellationToken = default
+    ) => await mediator.Send(query, cancellationToken);
 }

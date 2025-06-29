@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using TheBoys.Application.Abstractions;
 using TheBoys.Application.Features.Users.Queries.GetById;
+using TheBoys.Application.Features.Users.Queries.Paginate;
+using TheBoys.Contracts.Users;
 using TheBoys.Domain.Abstractions;
 using TheBoys.Domain.Entities.Users;
 
@@ -136,10 +138,30 @@ internal sealed class UserService(
         return new Response() { Success = true };
     }
 
-    //public Task<PaginationResponse<List<PaginateUsersResult>>> PaginateAsync(
-    //    CancellationToken cancellationToken = default
-    //)
-    //{
-    //    var users = userRepository
-    //}
+    public async Task<PaginationResponse<List<PaginateUsersResult>>> PaginateAsync(
+        PaginateUsersQuery query,
+        CancellationToken cancellationToken = default
+    )
+    {
+        UsersPaginationContract usersContract = await userRepository.PaginateAsync(
+            new PaginateUsersContract()
+            {
+                Search = query.Search,
+                RoleId = query.RoleId,
+                PageIndex = query.PageIndex,
+                PageSize = query.PageSize,
+            },
+            cancellationToken
+        );
+
+        return new PaginationResponse<List<PaginateUsersResult>>()
+        {
+            Success = true,
+            PageIndex = query.PageIndex,
+            PageSize = query.PageSize,
+            TotalCount = usersContract.TotalCount,
+            Count = usersContract.Elements.Count,
+            Result = usersContract.Elements.Select(x => new PaginateUsersResult(x)).ToList(),
+        };
+    }
 }
